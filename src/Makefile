@@ -91,7 +91,7 @@ clang_check:
 	clang-format -style=Google -n $(CC_FILES) $(H_FILES)
 
 cpplint:
-	cpplint $(MODULES_CC) $(MODULES_H)
+	cpplint $(CC_FILES) $(H_FILES)
 
 check:
 	make clang_fix

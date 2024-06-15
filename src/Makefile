@@ -125,9 +125,11 @@ clean:
 	rm -f $(VALGRIND_REPORT)
 	rm -rf $(DOCS_DIR)
 
-.PHONY: preferences
-preferences:
-	sudo apt install libgtest-dev
+.PHONY: dependencies
+dependencies:
+	sudo apt install libgtest-dev -y
+	sudo apt install python3-pip
+	pip install cpplint
 
 # CREATE DIRECTORIES =========================================================#
 $(OBJ_DIR):

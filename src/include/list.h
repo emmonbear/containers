@@ -45,6 +45,16 @@ class list {
   list(list &&l);
   ~list() noexcept;
   list operator=(list &&l);
+
+ private:
+  struct Node {
+    value_type value_;
+    Node *prev_;
+    Node *next_;
+
+    explicit Node(const value_type &value)
+        : value_{value}, prev_{nullptr}, next_{nullptr} {}
+  };
 };
 }  // namespace containers
 

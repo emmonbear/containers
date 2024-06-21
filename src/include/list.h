@@ -12,6 +12,8 @@
 #ifndef SRC_INCLUDE_LIST_H_
 #define SRC_INCLUDE_LIST_H_
 
+#include <iostream>
+
 namespace containers {
 /**
  * @brief Class that implements a list.
@@ -38,7 +40,7 @@ class list {
   // using const_iterator = /* implementation-defined */;
 
   // construct/copy/destroy
-  list();
+  list() noexcept;
   explicit list(size_type n);
   list(std::initializer_list<value_type> const &items);
   list(const list &l);
@@ -49,12 +51,15 @@ class list {
  private:
   struct Node {
     value_type value_;
-    Node *prev_;
-    Node *next_;
+    Node *prev_{nullptr};
+    Node *next_{nullptr};
 
-    explicit Node(const value_type &value)
-        : value_{value}, prev_{nullptr}, next_{nullptr} {}
+    explicit Node(const value_type &value) : value_{value} {}
   };
+
+  Node *head_{nullptr};
+  Node *tail_{nullptr};
+  size_type size_{0};
 };
 }  // namespace containers
 

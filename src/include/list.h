@@ -41,12 +41,14 @@ class list {
 
   // construct/copy/destroy
   list() noexcept;
-  explicit list(size_type n);
+  explicit list(size_type n) noexcept;
   list(std::initializer_list<value_type> const &items);
   list(const list &l);
   list(list &&l);
   ~list() noexcept;
   list operator=(list &&l);
+
+  void push_back(const_reference value) noexcept;
 
  private:
   struct Node {

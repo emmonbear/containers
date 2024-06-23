@@ -8,3 +8,6 @@
  * @copyright Copyright (c) 2024
  *
  */
+
+#include "../../s21_containers.h"
+#include "../main_test.h"

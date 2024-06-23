@@ -50,6 +50,8 @@ class list {
 
   void push_back(const_reference value) noexcept;
 
+  bool empty() noexcept;
+
  private:
   struct Node {
     value_type value_;

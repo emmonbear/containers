@@ -71,4 +71,14 @@ void list<value_type>::push_back(const_reference value) noexcept {
   ++size_;
 }
 
+/**
+ * @brief Checks whether the container is empty.
+ *
+ * @return * template <typename value_type>
+ */
+template <typename value_type>
+bool list<value_type>::empty() noexcept {
+  return size_ == 0;
+}
+
 }  // namespace containers

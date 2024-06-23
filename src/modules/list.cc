@@ -38,6 +38,11 @@ list<value_type>::list() noexcept = default;
 //   }
 // }
 
+template <typename value_type>
+list<value_type>::~list() noexcept {
+  clear();
+}
+
 /**
  * @brief Adds a new node with the given value to the end of the list.
  *
@@ -79,6 +84,13 @@ void list<value_type>::push_back(const_reference value) noexcept {
 template <typename value_type>
 bool list<value_type>::empty() noexcept {
   return size_ == 0;
+}
+
+template <typename value_type>
+void list<value_type>::clear() noexcept {
+  while (!empty()) {
+    pop_back();
+  }
 }
 
 }  // namespace containers

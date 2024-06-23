@@ -64,6 +64,8 @@ class list {
   Node *head_{nullptr};
   Node *tail_{nullptr};
   size_type size_{0};
+
+  void clear() noexcept;
 };
 }  // namespace containers
 

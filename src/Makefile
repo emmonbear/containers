@@ -13,24 +13,17 @@ VALGRIND_REPORT = val.txt
 
 # DIRECTORIES ================================================================#
 OBJ_DIR = ./obj
-MODULES_DIR = ./modules
 TESTS_DIR = ./tests
 REPORT_DIR = ./report
-INCLUDE_DIR = ./include
-DEBUG_DIR = ./debug
+CONTAINERS_DIR = ./containers
 DOCS_DIR = ../docs
 
 # TARGET NAMES ===============================================================#
 TARGET = test
-LIB = $(PROJECT_NAME).a
 GCOV = gcov_report
 
-# LIST OF FILES AND DIRECTORIES IN MODULES ===================================#
-MODULES_DIRS = $(shell find $(MODULES_DIR) -type d)
-MODULES_CC = $(shell find $(MODULES_DIR) -type f -name "*.cc")
-MODULES_H = $(shell find $(INCLUDE_DIR) -type f -name "*.h")
-MODULES_O = $(notdir $(MODULES_CC:%.cc=%.o))
-MODULES_OBJ_PATH = $(addprefix $(OBJ_DIR)/modules/, $(MODULES_O))
+# LIST OF FILES IN CONTAINERS ================================================#
+CONTAINERS_H = $(shell find $(SRC_INCLUDE_LIST_H_) -type f -name "*.h")
 
 # LIST OF FILES AND DIRECTORIES IN TESTS =====================================#
 TESTS_DIRS = $(shell find $(TESTS_DIR) -type d)
@@ -40,30 +33,25 @@ TESTS_O = $(notdir $(TESTS_CC:%.cc=%.o))
 TESTS_OBJ_PATH = $(addprefix $(OBJ_DIR)/tests/, $(TESTS_O))
 
 # LIST OF FILES TO CLANG-FORMAT AND CPPCHECK =================================#
-CC_FILES = $(MODULES_CC) $(TESTS_CC)
-H_FILES = $(MODULES_H) $(TESTS_H)
+CC_FILES = $(TESTS_CC)
+H_FILES = $(CONTAINERS_H) $(TESTS_H)
 
 # LIST OF DIRECTORIES THAT MAKE SHOULD SEARCH
-vpath %.cc $(MODULES_DIRS) $(TESTS_DIRS)
+vpath %.cc $(TESTS_DIRS)
 vpath %.o $(OBJ_DIR)
 
 # TARGETS ====================================================================#
 .PHONY: all
 all: $(GCOV)
 
-.PHONY: $(LIB)
-$(LIB): $(OBJ_DIR) $(MODULES_O) $(MODULES_H)
-	ar rcs $@ $(MODULES_OBJ_PATH)
-	ranlib $@
-
 .PHONY: $(TARGET)
-$(TARGET): $(LIB) $(OBJ_DIR) $(TESTS_O)
-	$(CXX) $(TESTS_OBJ_PATH) $(LIB) $(LDFLAGS) -o $@
+$(TARGET): $(CONTAINERS_H) $(OBJ_DIR) $(TESTS_O)
+	$(CXX) $(TESTS_OBJ_PATH) $(LDFLAGS) -o $@
 	./$@
 
 .PHONE: $(GCOV)
 $(GCOV): $(OBJ_DIR) $(REPORT_DIR) $(TESTS_O)
-	$(CXX) $(TESTS_OBJ_PATH) $(MODULES_CC) $(LDFLAGS) $(GCOV_FLAGS) -o $(addprefix $(OBJ_DIR)/, $(TARGET))
+	$(CXX) $(TESTS_OBJ_PATH) $(LDFLAGS) $(GCOV_FLAGS) -o $(addprefix $(OBJ_DIR)/, $(TARGET))
 	-./$(addprefix $(OBJ_DIR)/, $(TARGET))
 	gcovr -r . --html --html-details -o $(REPORT_DIR)/coverage.html
 	xdg-open $(REPORT_DIR)/coverage.html
@@ -79,9 +67,6 @@ dvi_open:
 
 %_test.o: %_test.cc $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $(addprefix $(OBJ_DIR)/tests/, $@) $<
-
-%.o: %.cc $(MODULES_H) $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c -o $(addprefix $(OBJ_DIR)/modules/, $@) $<
 
 # CHECKS =====================================================================#
 clang_fix:
@@ -119,7 +104,6 @@ valgrind: $(TARGET)
 
 clean:
 	rm -f $(TARGET)
-	rm -f $(LIB)
 	rm -rf $(OBJ_DIR)
 	rm -rf $(REPORT_DIR)
 	rm -f $(VALGRIND_REPORT)
@@ -134,32 +118,9 @@ dependencies:
 # CREATE DIRECTORIES =========================================================#
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/tests/
-	mkdir -p $(OBJ_DIR)/modules/
 
 $(REPORT_DIR):
 	mkdir -p $(REPORT_DIR)
 
 $(DOCS_DIR):
 	mkdir -p $(DOCS_DIR)
-
-1:
-	@echo $(MODULES_DIR)
-	@echo
-	@echo $(MODULES_CC)
-	@echo
-	@echo $(MODULES_H)
-	@echo
-	@echo $(MODULES_O)
-	@echo
-	@echo $(MODULES_OBJ_PATH)
-
-2:
-	@echo $(TESTS_DIR)
-	@echo
-	@echo $(TESTS_CC)
-	@echo
-	@echo $(TESTS_H)
-	@echo
-	@echo $(TESTS_O)
-	@echo
-	@echo $(TESTS_OBJ_PATH)

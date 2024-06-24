@@ -1,7 +1,7 @@
 /**
- * @file list.cc
+ * @file list.h
  * @author emmonbea (moskaleviluak@icloud.com)
- * @brief Implementation of the list class
+ * @brief Declaration of the list class
  * @version 1.0
  * @date 2024-06-14
  *
@@ -9,9 +9,65 @@
  *
  */
 
-#include "../include/list.h"
+#ifndef SRC_CONTAINERS_LIST_H_
+#define SRC_CONTAINERS_LIST_H_
+
+#include <iostream>
 
 namespace containers {
+/**
+ * @brief Class that implements a list.
+ *
+ * @details
+ *
+ * List is a sequence container that stores a set of elements with arbitrary
+ * size, in the form of nodes connected in sequence by pointers. Each node
+ * stores a value corresponding to an element in the list, and a pointer to the
+ * next element. This container design allows you to avoid a rigidly fixed size,
+ * such as in a static array, and makes adding a new element to the container
+ * more user-friendly.
+ *
+ */
+template <typename T>
+class list {
+ public:
+  // types
+  using value_type = T;
+  using reference = value_type &;
+  using const_reference = const value_type &;
+  using size_type = std::size_t;
+  // using iterator = /* implementation-defined */;
+  // using const_iterator = /* implementation-defined */;
+
+  // construct/copy/destroy
+  list() noexcept;
+  explicit list(size_type n) noexcept;
+  list(std::initializer_list<value_type> const &items);
+  list(const list &l);
+  list(list &&l);
+  ~list() noexcept;
+  list operator=(list &&l);
+
+  void push_back(const_reference value) noexcept;
+
+  bool empty() noexcept;
+
+ private:
+  struct Node {
+    value_type value_;
+    Node *prev_{nullptr};
+    Node *next_{nullptr};
+
+    explicit Node(const value_type &value) : value_{value} {}
+  };
+
+  Node *head_{nullptr};
+  Node *tail_{nullptr};
+  size_type size_{0};
+
+  void clear() noexcept;
+  void pop_back() noexcept;
+};
 
 /**
  * @brief Default constructor for the list class.
@@ -86,6 +142,11 @@ bool list<value_type>::empty() noexcept {
   return size_ == 0;
 }
 
+/**
+ * @brief Clear the contents of the list.
+ *
+ * @return * template <typename value_type>
+ */
 template <typename value_type>
 void list<value_type>::clear() noexcept {
   while (!empty()) {
@@ -93,4 +154,31 @@ void list<value_type>::clear() noexcept {
   }
 }
 
+/**
+ * @brief Removes the last element of the list.
+ *
+ * @return * template <typename value_type>
+ */
+template <typename value_type>
+void list<value_type>::pop_back() noexcept {
+  if (empty()) {
+    std::cerr << "list is empty" << std::endl;
+  } else {
+    if (size_ == 1) {
+      delete head_;
+      head_ = nullptr;
+      tail_ = nullptr;
+    } else {
+      Node *prev = tail_->prev_;
+      delete tail_;
+      tail_ = prev;
+      tail_->next_ = nullptr;
+    }
+
+    size_--;
+  }
+}
+
 }  // namespace containers
+
+#endif  // SRC_CONTAINERS_LIST_H_

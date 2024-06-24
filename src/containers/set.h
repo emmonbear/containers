@@ -9,7 +9,7 @@
  *
  */
 
-#ifndef SRC_INCLUDE_SET_H_
-#define SRC_INCLUDE_SET_H_
+#ifndef SRC_CONTAINERS_SET_H_
+#define SRC_CONTAINERS_SET_H_
 
-#endif  // SRC_INCLUDE_SET_H_
+#endif  // SRC_CONTAINERS_SET_H_

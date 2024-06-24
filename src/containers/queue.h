@@ -9,7 +9,7 @@
  *
  */
 
-#ifndef SRC_INCLUDE_QUEUE_H_
-#define SRC_INCLUDE_QUEUE_H_
+#ifndef SRC_CONTAINERS_QUEUE_H_
+#define SRC_CONTAINERS_QUEUE_H_
 
-#endif  // SRC_INCLUDE_QUEUE_H_
+#endif  // SRC_CONTAINERS_QUEUE_H_

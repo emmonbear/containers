@@ -9,7 +9,7 @@
  *
  */
 
-#ifndef SRC_INCLUDE_STACK_H_
-#define SRC_INCLUDE_STACK_H_
+#ifndef SRC_CONTAINERS_STACK_H_
+#define SRC_CONTAINERS_STACK_H_
 
-#endif  // SRC_INCLUDE_STACK_H_
+#endif  // SRC_CONTAINERS_STACK_H_

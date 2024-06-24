@@ -26,11 +26,6 @@ jobs:
         cd src
         make check
 
-    - name: Library
-      run: |
-        cd src
-        make s21_containers.a
-
     - name: Test
       run: |
         cd src

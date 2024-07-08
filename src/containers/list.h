@@ -14,7 +14,7 @@
 
 #include <iostream>
 
-namespace containers {
+namespace s21 {
 /**
  * @brief Class that implements a list.
  *
@@ -179,6 +179,6 @@ void list<value_type>::pop_back() noexcept {
   }
 }
 
-}  // namespace containers
+}  // namespace s21
 
 #endif  // SRC_CONTAINERS_LIST_H_

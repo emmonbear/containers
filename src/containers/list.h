@@ -41,12 +41,12 @@ class list {
   // CONSTRUCTORS AND ASSIGNMENT OPERATORS
 
   list() noexcept;
+  explicit list(size_type n);
+  list(std::initializer_list<value_type> const &items);
   list(const list &l);
   list &operator=(const list &l);
   list(list &&l);
-  list operator=(list &&l);
-  // explicit list(size_type n) noexcept;
-  // list(std::initializer_list<value_type> const &items);
+  list &operator=(list &&l);
 
   // DESTRUCTOR
 
@@ -100,6 +100,44 @@ template <typename value_type>
 list<value_type>::list() noexcept = default;
 
 /**
+ * @brief Constructs a new list with a specified number of default-initialized
+ * elements.
+ *
+ * @details
+ *
+ * This constructor initializes an empty list and appends `n`
+ * default-initialized elements to the list.
+ *
+ * @param n The number of elements to add to the list.
+ * @tparam value_type The type of elements stored in the list.
+ */
+template <typename value_type>
+list<value_type>::list(size_type n) {
+  for (size_type i = 0; i < n; i++) {
+    push_back(value_type());
+  }
+}
+
+/**
+ * @brief Constructs a new list from an initializer list of values.
+ *
+ * @details
+ *
+ * This constructor initializes an empty list and appends each element
+ * from the given initializer list to the end of the list.
+ *
+ * @param items An initializer list of values to populate the list.
+ * @tparam value_type The type of elements stored in the list.
+ */
+template <typename value_type>
+list<value_type>::list(std::initializer_list<value_type> const &items)
+    : head_{nullptr}, tail_{nullptr}, size_{0} {
+  for (const value_type &item : items) {
+    push_back(item);
+  }
+}
+
+/**
  * @brief Copy constructor for creating a new list as a copy of another list.
  *
  * @details
@@ -107,6 +145,7 @@ list<value_type>::list() noexcept = default;
  * This constructor initializes a new list as a copy of the provided list `l`.
  * It initializes the head, tail, and size of the new list and then copies all
  * elements from `l` to the new list using the `copy_from` method.
+ *
  * @param l The list to be copied.
  * @tparam value_type The type of elements stored in the list.
  */
@@ -114,6 +153,74 @@ template <typename value_type>
 list<value_type>::list(const list &l)
     : head_{nullptr}, tail_{nullptr}, size_{0} {
   copy_from(l);
+}
+
+/**
+ * @brief Assignment operator.
+ *
+ * @details
+ *
+ * Copies the contents of list @p l into the current list.
+ *
+ * @param l The list to copy from.
+ * @tparam value_type The type of elements stored in the list.
+ * @return Reference to the current list object after copying.
+ */
+template <typename value_type>
+typename list<value_type>::list &list<value_type>::operator=(const list &l) {
+  if (this != l) {
+    clear();
+    copy_from(l);
+  }
+
+  return *this;
+}
+
+/**
+ * @brief Move constructor.
+ *
+ * @details
+ *
+ * Constructs a new list by transferring ownership of the data from the
+ * specified list `l` to this list. The source list `l` is left in an
+ * empty state.
+ *
+ * @param l The list to move from.
+ * @tparam value_type The type of elements stored in the list.
+ */
+template <typename value_type>
+list<value_type>::list(list &&l)
+    : head_{l.head_}, tail_{l.tail_}, size_{l.size_} {
+  l.head_ = nullptr;
+  l.tail_ = nullptr;
+  l.size_ = 0;
+}
+
+/**
+ * @brief Move assignment operator.
+ *
+ * @details
+ *
+ * Moves the contents of the list @p l into the current list and returns a
+ * reference to the modified list.
+ * @param l The list to move from.
+ * @return * template <typename value_type>&
+ * @tparam value_type The type of elements stored in the list.
+ */
+template <typename value_type>
+typename list<value_type>::list &list<value_type>::operator=(list &&l) {
+  if (this != &l) {
+    clear();
+    head_ = l.head_;
+    tail_ = l.tail_;
+    size_ = l.size_;
+
+    l.head_ = nullptr;
+    l.tail_ = nullptr;
+    l.size_ = 0;
+  }
+
+  return std::move(*this);
 }
 
 /**

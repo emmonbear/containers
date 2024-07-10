@@ -56,6 +56,11 @@ class list {
 
   bool operator==(const list &l) const;
 
+  // LIST ELEMENT ACCESS
+
+  const_reference front() const;
+  const_reference back() const;
+
   void push_back(const_reference value) noexcept;
   void pop_back() noexcept;
 
@@ -371,6 +376,36 @@ bool list<value_type>::operator==(const list &l) const {
   }
 
   return true;
+}
+
+/**
+ * @brief Access the first element.
+ * @tparam value_type The type of elements stored in the list.
+ * @return const_reference A reference to the first element in the list.
+ * @throw std::out_of_range if the list is empty.
+ */
+template <typename value_type>
+typename list<value_type>::const_reference list<value_type>::front() const {
+  if (empty()) {
+    throw std::out_of_range("list is empty");
+  }
+
+  return head_->value_;
+}
+
+/**
+ * @brief Access the last element.
+ * @tparam value_type The type of elements stored in the list.
+ * @return const_reference A reference to the last element in the list.
+ * @throw std::out_of_range if the list is empty.
+ */
+template <typename value_type>
+typename list<value_type>::const_reference list<value_type>::back() const {
+  if (empty()) {
+    throw std::out_of_range("list is empty");
+  }
+
+  return tail_->value_;
 }
 
 }  // namespace s21

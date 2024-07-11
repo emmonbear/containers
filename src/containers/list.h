@@ -94,6 +94,10 @@ class list {
   void copy_from(const list &l);
 };
 
+/**
+ * @brief A node in the doubly linked list.
+ * @tparam value_type The type of the value stored in the node.
+ */
 template <typename value_type>
 class list<value_type>::Node {
   friend class list;
@@ -106,6 +110,10 @@ class list<value_type>::Node {
       : value_{value}, prev_{nullptr}, next_{nullptr} {}
 };
 
+/**
+ * @brief Iterator class for iterating over a doubly linked list.
+ * @tparam value_type The type of elements stored in the list.
+ */
 template <typename value_type>
 class list<value_type>::ListIterator {
  public:
@@ -127,6 +135,10 @@ class list<value_type>::ListIterator {
   Node *node_{nullptr};
 };
 
+/**
+ * @brief Iterator class for iterating through a constant list.
+ * @tparam value_type The type of elements stored in the list.
+ */
 template <typename value_type>
 class list<value_type>::ListConstIterator {
  public:
@@ -149,18 +161,33 @@ class list<value_type>::ListConstIterator {
 
 // ListIterator ###############################################################
 
+/**
+ * @brief Dereference operator.
+ * @tparam value_type The type of elements stored in the list.
+ * @return Reference to the value stored in the current node.
+ */
 template <typename value_type>
 typename list<value_type>::reference list<value_type>::ListIterator::operator*()
     const {
   return node_->value_;
 }
 
+/**
+ * @brief Arrow operator.
+ * @tparam value_type The type of elements stored in the list.
+ * @return Pointer to the value stored in the current node.
+ */
 template <typename value_type>
 typename list<value_type>::pointer list<value_type>::ListIterator::operator->()
     const {
   return &(node_->value_);
 }
 
+/**
+ * @brief Pre-increment operator (++i).
+ * @tparam value_type The type of elements stored in the list.
+ * @return Reference to the updated iterator.
+ */
 template <typename value_type>
 typename list<value_type>::ListIterator::ListIterator &
 list<value_type>::ListIterator::operator++() {
@@ -169,6 +196,11 @@ list<value_type>::ListIterator::operator++() {
   return *this;
 }
 
+/**
+ * @brief Post-increment operator (i++).
+ * @tparam value_type The type of elements stored in the list.
+ * @return A copy of the iterator before the increment.
+ */
 template <typename value_type>
 typename list<value_type>::ListIterator::ListIterator
 list<value_type>::ListIterator::operator++(int) {
@@ -178,6 +210,11 @@ list<value_type>::ListIterator::operator++(int) {
   return tmp;
 }
 
+/**
+ * @brief Pre-decrement operator (--i).
+ * @tparam value_type The type of elements stored in the list.
+ * @return Reference to the updated iterator.
+ */
 template <typename value_type>
 typename list<value_type>::ListIterator::ListIterator &
 list<value_type>::ListIterator::operator--() {
@@ -186,6 +223,11 @@ list<value_type>::ListIterator::operator--() {
   return *this;
 }
 
+/**
+ * @brief Post-decrement operator (i--).
+ * @tparam value_type The type of elements stored in the list.
+ * @return A copy of the iterator before decrementing.
+ */
 template <typename value_type>
 typename list<value_type>::ListIterator::ListIterator
 list<value_type>::ListIterator::operator--(int) {
@@ -195,12 +237,24 @@ list<value_type>::ListIterator::operator--(int) {
   return tmp;
 }
 
+/**
+ * @brief Equality comparison operator.
+ * @tparam value_type The type of elements stored in the list.
+ * @param other The iterator to compare against.
+ * @return true if both iterators point to the same node, false otherwise.
+ */
 template <typename value_type>
 bool list<value_type>::ListIterator::operator==(
     const ListIterator &other) const {
   return node_ == other.node_;
 }
 
+/**
+ * @brief Inequality comparison operator.
+ * @tparam value_type The type of elements stored in the list.
+ * @param other The iterator to compare against.
+ * @return true if the iterators point to different nodes, false otherwise.
+ */
 template <typename value_type>
 bool list<value_type>::ListIterator::operator!=(
     const ListIterator &other) const {
@@ -209,18 +263,33 @@ bool list<value_type>::ListIterator::operator!=(
 
 // ListConstIterator ##########################################################
 
+/**
+ * @brief Dereference operator.
+ * @tparam value_type The type of elements stored in the list.
+ * @return const_reference A reference to the value of the current node.
+ */
 template <typename value_type>
 typename list<value_type>::const_reference
 list<value_type>::ListConstIterator::operator*() const {
   return node_->value_;
 }
 
+/**
+ * @brief Member access operator.
+ * @tparam value_type The type of elements stored in the list.
+ * @return const_pointer A pointer to the value of the current node.
+ */
 template <typename value_type>
 typename list<value_type>::const_pointer
 list<value_type>::ListConstIterator::operator->() const {
   return &(node_->value_);
 }
 
+/**
+ * @brief Pre-increment operator (++i).
+ * @tparam value_type The type of elements stored in the list.
+ * @return Reference to the updated iterator.
+ */
 template <typename value_type>
 typename list<value_type>::ListConstIterator &
 list<value_type>::ListConstIterator::operator++() {
@@ -229,6 +298,11 @@ list<value_type>::ListConstIterator::operator++() {
   return (*this);
 }
 
+/**
+ * @brief Post-increment operator (i++).
+ * @tparam value_type The type of elements stored in the list.
+ * @return A copy of the iterator before the increment.
+ */
 template <typename value_type>
 typename list<value_type>::ListConstIterator
 list<value_type>::ListConstIterator::operator++(int) {
@@ -238,6 +312,11 @@ list<value_type>::ListConstIterator::operator++(int) {
   return tmp;
 }
 
+/**
+ * @brief Pre-decrement operator (--i).
+ * @tparam value_type The type of elements stored in the list.
+ * @return Reference to the updated iterator.
+ */
 template <typename value_type>
 typename list<value_type>::ListConstIterator &
 list<value_type>::ListConstIterator::operator--() {
@@ -246,6 +325,11 @@ list<value_type>::ListConstIterator::operator--() {
   return (*this);
 }
 
+/**
+ * @brief Post-decrement operator (i--).
+ * @tparam value_type The type of elements stored in the list.
+ * @return A copy of the iterator before decrementing.
+ */
 template <typename value_type>
 typename list<value_type>::ListConstIterator
 list<value_type>::ListConstIterator::operator--(int) {
@@ -255,12 +339,24 @@ list<value_type>::ListConstIterator::operator--(int) {
   return tmp;
 }
 
+/**
+ * @brief Equality comparison operator.
+ * @tparam value_type The type of elements stored in the list.
+ * @param other The iterator to compare against.
+ * @return true if both iterators point to the same node, false otherwise.
+ */
 template <typename value_type>
 bool list<value_type>::ListConstIterator::operator==(
     const ListConstIterator &other) const {
   return node_ == other.node_;
 }
 
+/**
+ * @brief Inequality comparison operator.
+ * @tparam value_type The type of elements stored in the list.
+ * @param other The iterator to compare against.
+ * @return true if the iterators point to different nodes, false otherwise.
+ */
 template <typename value_type>
 bool list<value_type>::ListConstIterator::operator!=(
     const ListConstIterator &other) const {
@@ -451,11 +547,22 @@ typename list<value_type>::const_reference list<value_type>::back() const {
   return tail_->value_;
 }
 
+/**
+ * @brief Returns an iterator to the beginning of the list.
+ * @tparam value_type The type of the value stored in the list.
+ * @return iterator An iterator to the first element in the list.
+ */
 template <typename value_type>
 typename list<value_type>::iterator list<value_type>::begin() {
   return iterator{head_};
 }
 
+/**
+ * @brief Returns an iterator to the end of the list.
+ * @tparam value_type The type of the value stored in the list.
+ * @return iterator An iterator to the element following the last element in the
+ * list.
+ */
 template <typename value_type>
 typename list<value_type>::iterator list<value_type>::end() {
   return iterator{nullptr};

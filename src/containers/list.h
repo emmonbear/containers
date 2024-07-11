@@ -38,11 +38,12 @@ class list {
   using reference = T &;
   using const_reference = const T &;
   using size_type = std::size_t;
-  using iterator = list<T>::ListIterator;
-  using const_iterator = list<T>::ListConstIterator;
+  using iterator = ListIterator;
+  using const_iterator = ListConstIterator;
   using pointer = T *;
   using const_pointer = const T *;
 
+  // List Functions
   list() noexcept;
   explicit list(size_type n);
   list(std::initializer_list<value_type> const &items);
@@ -53,18 +54,36 @@ class list {
 
   ~list() noexcept;
 
-  bool operator==(const list &l) const;
-
+  // List Element Access
   const_reference front() const;
   const_reference back() const;
 
-  void push_back(const_reference value) noexcept;
-  void pop_back() noexcept;
+  // List Iterators
+  iterator begin();
+  iterator end();
 
+  // List Capacity
   bool empty() noexcept;
   size_type size() const;
+  size_type max_size() const;
 
+  // List Modifiers
   void clear() noexcept;
+  iterator insert(iterator pos, const_reference value);
+  void erase(iterator pos);
+  void push_back(const_reference value) noexcept;
+  void pop_back() noexcept;
+  void push_front(const_reference value);
+  void pop_front();
+  void swap(list &other);
+  void merge(list &other);
+  void splice(const_iterator pos, list &other);
+  void reverse();
+  void unique();
+  void sort();
+
+  // Other
+  bool operator==(const list &l) const;
 
  private:
   struct Node;
@@ -114,7 +133,7 @@ class list<value_type>::ListConstIterator {
   friend class list;
 
   ListConstIterator() noexcept = default;
-  ListConstIterator(Node *node) : node_{node} {}
+  ListConstIterator(const Node *node) : node_{node} {}
   const_reference operator*() const;
   const_pointer operator->() const;
   ListConstIterator &operator++();
@@ -128,7 +147,7 @@ class list<value_type>::ListConstIterator {
   Node *node_{nullptr};
 };
 
-///////////////////////////////////////////////////////////////////////////////
+// ListIterator ###############################################################
 
 template <typename value_type>
 typename list<value_type>::reference list<value_type>::ListIterator::operator*()
@@ -188,7 +207,7 @@ bool list<value_type>::ListIterator::operator!=(
   return !(*this == other);
 }
 
-/////////////////////////////////////////////////////////////
+// ListConstIterator ##########################################################
 
 template <typename value_type>
 typename list<value_type>::const_reference
@@ -248,7 +267,8 @@ bool list<value_type>::ListConstIterator::operator!=(
   return !(*this == other);
 }
 
-///
+// List ########################################################################
+
 /**
  * @brief Default constructor for the list class.
  *
@@ -402,6 +422,46 @@ list<value_type>::~list() noexcept {
 }
 
 /**
+ * @brief Access the first element.
+ * @tparam value_type The type of elements stored in the list.
+ * @return const_reference A reference to the first element in the list.
+ * @throw std::out_of_range if the list is empty.
+ */
+template <typename value_type>
+typename list<value_type>::const_reference list<value_type>::front() const {
+  if (empty()) {
+    throw std::out_of_range("list is empty");
+  }
+
+  return head_->value_;
+}
+
+/**
+ * @brief Access the last element.
+ * @tparam value_type The type of elements stored in the list.
+ * @return const_reference A reference to the last element in the list.
+ * @throw std::out_of_range if the list is empty.
+ */
+template <typename value_type>
+typename list<value_type>::const_reference list<value_type>::back() const {
+  if (empty()) {
+    throw std::out_of_range("list is empty");
+  }
+
+  return tail_->value_;
+}
+
+template <typename value_type>
+typename list<value_type>::iterator list<value_type>::begin() {
+  return iterator{head_};
+}
+
+template <typename value_type>
+typename list<value_type>::iterator list<value_type>::end() {
+  return iterator{nullptr};
+}
+
+/**
  * @brief Adds a new node with the given value to the end of the list.
  *
  * @details
@@ -535,47 +595,6 @@ bool list<value_type>::operator==(const list &l) const {
 
   return true;
 }
-
-/**
- * @brief Access the first element.
- * @tparam value_type The type of elements stored in the list.
- * @return const_reference A reference to the first element in the list.
- * @throw std::out_of_range if the list is empty.
- */
-template <typename value_type>
-typename list<value_type>::const_reference list<value_type>::front() const {
-  if (empty()) {
-    throw std::out_of_range("list is empty");
-  }
-
-  return head_->value_;
-}
-
-/**
- * @brief Access the last element.
- * @tparam value_type The type of elements stored in the list.
- * @return const_reference A reference to the last element in the list.
- * @throw std::out_of_range if the list is empty.
- */
-template <typename value_type>
-typename list<value_type>::const_reference list<value_type>::back() const {
-  if (empty()) {
-    throw std::out_of_range("list is empty");
-  }
-
-  return tail_->value_;
-}
-
-// ITERATOR'S METHODS
-// template <typename value_type>
-// typename list<value_type>::iterator& list<value_type>::iterator::operator++()
-// {
-//   if (node_) {
-//     node_ = node_->next_;
-//   }
-
-//   return *this;
-// }
 
 }  // namespace s21
 

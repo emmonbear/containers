@@ -31,14 +31,16 @@ namespace s21 {
 template <typename T>
 class list {
  public:
-  // TYPES AND TYPE ALIASES
+  class ListIterator;
+  class ListConstIterator;
 
   using value_type = T;
   using reference = T &;
   using const_reference = const T &;
   using size_type = std::size_t;
-
-  // CONSTRUCTORS AND ASSIGNMENT OPERATORS
+  using iterator = list<T>::ListIterator;
+  using const_iterator = list<T>::ListConstIterator;
+  using pointer = T *;
 
   list() noexcept;
   explicit list(size_type n);
@@ -48,15 +50,9 @@ class list {
   list(list &&l);
   list &operator=(list &&l);
 
-  // DESTRUCTOR
-
   ~list() noexcept;
 
-  // METHODS
-
   bool operator==(const list &l) const;
-
-  // LIST ELEMENT ACCESS
 
   const_reference front() const;
   const_reference back() const;
@@ -70,26 +66,105 @@ class list {
   void clear() noexcept;
 
  private:
-  // LIST NODE
-
-  struct Node {
-    value_type value_;
-    Node *prev_{nullptr};
-    Node *next_{nullptr};
-
-    explicit Node(const_reference value)
-        : value_{value}, prev_{nullptr}, next_{nullptr} {}
-  };
-
+  struct Node;
   Node *head_{nullptr};
   Node *tail_{nullptr};
   size_type size_{0};
 
-  // SUPPORTING METHODS
   void copy_from(const list &l);
 };
 
+template <typename value_type>
+class list<value_type>::Node {
+  friend class list;
+
+  value_type value_;
+  Node *prev_;
+  Node *next_;
+
+  explicit Node(const_reference value)
+      : value_{value}, prev_{nullptr}, next_{nullptr} {}
+};
+
+template <typename value_type>
+class list<value_type>::ListIterator {
+ public:
+  friend class list;
+
+  ListIterator() noexcept = default;
+  explicit ListIterator(Node *node) noexcept : node_{node} {}
+
+  reference operator*() const;
+  pointer operator->() const;
+  ListIterator &operator++();
+  ListIterator operator++(int);
+  ListIterator &operator--();
+  ListIterator operator--(int);
+  bool operator==(const ListIterator &other) const;
+  bool operator!=(const ListIterator &other) const;
+
+ private:
+  Node *node_{nullptr};
+};
 ///////////////////////////////////////////////////////////////////////////////
+
+template <typename value_type>
+typename list<value_type>::reference list<value_type>::ListIterator::operator*()
+    const {
+  return node_->value_;
+}
+
+template <typename value_type>
+typename list<value_type>::pointer list<value_type>::ListIterator::operator->()
+    const {
+  return &(node_->value_);
+}
+
+template <typename value_type>
+typename list<value_type>::ListIterator::ListIterator &
+list<value_type>::ListIterator::operator++() {
+  node_ = node_->next_;
+
+  return *this;
+}
+
+template <typename value_type>
+typename list<value_type>::ListIterator::ListIterator
+list<value_type>::ListIterator::operator++(int) {
+  ListIterator tmp{*this};
+  ++(*this);
+
+  return tmp;
+}
+
+template <typename value_type>
+typename list<value_type>::ListIterator::ListIterator &
+list<value_type>::ListIterator::operator--() {
+  node_ = node_->prev_;
+
+  return *this;
+}
+
+template <typename value_type>
+typename list<value_type>::ListIterator::ListIterator
+list<value_type>::ListIterator::operator--(int) {
+  ListIterator tmp{*this};
+  --(*this);
+
+  return tmp;
+}
+
+template <typename value_type>
+bool list<value_type>::ListIterator::operator==(
+    const ListIterator &other) const {
+  return node_ == other.node_;
+}
+
+template <typename value_type>
+bool list<value_type>::ListIterator::operator!=(
+    const ListIterator &other) const {
+  return !(*this == other);
+}
 
 /**
  * @brief Default constructor for the list class.
@@ -407,6 +482,17 @@ typename list<value_type>::const_reference list<value_type>::back() const {
 
   return tail_->value_;
 }
+
+// ITERATOR'S METHODS
+// template <typename value_type>
+// typename list<value_type>::iterator& list<value_type>::iterator::operator++()
+// {
+//   if (node_) {
+//     node_ = node_->next_;
+//   }
+
+//   return *this;
+// }
 
 }  // namespace s21
 

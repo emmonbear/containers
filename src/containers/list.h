@@ -41,6 +41,7 @@ class list {
   using iterator = list<T>::ListIterator;
   using const_iterator = list<T>::ListConstIterator;
   using pointer = T *;
+  using const_pointer = const T *;
 
   list() noexcept;
   explicit list(size_type n);
@@ -106,6 +107,27 @@ class list<value_type>::ListIterator {
  private:
   Node *node_{nullptr};
 };
+
+template <typename value_type>
+class list<value_type>::ListConstIterator {
+ public:
+  friend class list;
+
+  ListConstIterator() noexcept = default;
+  ListConstIterator(Node *node) : node_{node} {}
+  const_reference operator*() const;
+  const_pointer operator->() const;
+  ListConstIterator &operator++();
+  ListConstIterator operator++(int);
+  ListConstIterator &operator--();
+  ListConstIterator operator--(int);
+  bool operator==(const ListConstIterator &other) const;
+  bool operator!=(const ListConstIterator &other) const;
+
+ private:
+  Node *node_{nullptr};
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename value_type>
@@ -166,6 +188,67 @@ bool list<value_type>::ListIterator::operator!=(
   return !(*this == other);
 }
 
+/////////////////////////////////////////////////////////////
+
+template <typename value_type>
+typename list<value_type>::const_reference
+list<value_type>::ListConstIterator::operator*() const {
+  return node_->value_;
+}
+
+template <typename value_type>
+typename list<value_type>::const_pointer
+list<value_type>::ListConstIterator::operator->() const {
+  return &(node_->value_);
+}
+
+template <typename value_type>
+typename list<value_type>::ListConstIterator &
+list<value_type>::ListConstIterator::operator++() {
+  node_ = node_->next_;
+
+  return (*this);
+}
+
+template <typename value_type>
+typename list<value_type>::ListConstIterator
+list<value_type>::ListConstIterator::operator++(int) {
+  ListConstIterator tmp{*this};
+  ++(*this);
+
+  return tmp;
+}
+
+template <typename value_type>
+typename list<value_type>::ListConstIterator &
+list<value_type>::ListConstIterator::operator--() {
+  node_ = node_->prev_;
+
+  return (*this);
+}
+
+template <typename value_type>
+typename list<value_type>::ListConstIterator
+list<value_type>::ListConstIterator::operator--(int) {
+  ListConstIterator tmp{*this};
+  --(*this);
+
+  return tmp;
+}
+
+template <typename value_type>
+bool list<value_type>::ListConstIterator::operator==(
+    const ListConstIterator &other) const {
+  return node_ == other.node_;
+}
+
+template <typename value_type>
+bool list<value_type>::ListConstIterator::operator!=(
+    const ListConstIterator &other) const {
+  return !(*this == other);
+}
+
+///
 /**
  * @brief Default constructor for the list class.
  *

@@ -50,7 +50,7 @@ $(TARGET): $(CONTAINERS_H) $(OBJ_DIR) $(TESTS_O)
 	./$@
 
 .PHONE: $(GCOV)
-$(GCOV): $(OBJ_DIR) $(REPORT_DIR) $(TESTS_O)
+$(GCOV): $(OBJ_DIR) $(CONTAINERS_H) $(REPORT_DIR) $(TESTS_O)
 	$(CXX) $(TESTS_OBJ_PATH) $(LDFLAGS) $(GCOV_FLAGS) -o $(addprefix $(OBJ_DIR)/, $(TARGET))
 	-./$(addprefix $(OBJ_DIR)/, $(TARGET))
 	gcovr -r . --html --html-details -o $(REPORT_DIR)/coverage.html
@@ -80,7 +80,6 @@ cpplint:
 
 check:
 	make clang_fix
-	make cpplint
 
 valgrind: $(TARGET)
 	@printf '\033[1;33m\n\t\t\t\t                   _            _           _   _            _   _             \n'

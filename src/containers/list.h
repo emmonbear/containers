@@ -13,6 +13,7 @@
 #define SRC_CONTAINERS_LIST_H_
 
 #include <iostream>
+#include <limits>  // for std::numeric_limits
 
 namespace s21 {
 /**
@@ -34,14 +35,20 @@ class list {
   class ListIterator;
   class ListConstIterator;
 
-  using value_type = T;
-  using reference = T &;
-  using const_reference = const T &;
-  using size_type = std::size_t;
-  using iterator = ListIterator;
-  using const_iterator = ListConstIterator;
-  using pointer = T *;
-  using const_pointer = const T *;
+  using value_type = T;  ///< Alias for the type of values stored in the list.
+  using reference =
+      T &;  ///< Alias for a reference to the type of values stored in the list.
+  using const_reference = const T &;  ///< Alias for a constant reference to the
+                                      ///< type of values stored in the list.
+  using size_type =
+      std::size_t;  ///< Alias for the type used for size measurements.
+  using iterator = ListIterator;  ///< Alias for the iterator type for the list.
+  using const_iterator = ListConstIterator;  ///< Alias for the constant
+                                             ///< iterator type for the list.
+  using pointer =
+      T *;  ///< Alias for a pointer to the type of values stored in the list.
+  using const_pointer = const T *;  ///< Alias for a constant pointer to the
+                                    ///< type of values stored in the list.
 
   // List Functions
   list() noexcept;
@@ -61,16 +68,18 @@ class list {
   // List Iterators
   iterator begin();
   iterator end();
+  const_iterator cbegin() const;
+  const_iterator cend() const;
 
   // List Capacity
-  bool empty() noexcept;
+  bool empty() const noexcept;
   size_type size() const;
   size_type max_size() const;
 
   // List Modifiers
   void clear() noexcept;
   iterator insert(iterator pos, const_reference value);
-  void erase(iterator pos);
+  iterator erase(iterator pos);
   void push_back(const_reference value) noexcept;
   void pop_back() noexcept;
   void push_front(const_reference value);
@@ -84,6 +93,7 @@ class list {
 
   // Other
   bool operator==(const list &l) const;
+  void print() const;
 
  private:
   struct Node;
@@ -99,7 +109,7 @@ class list {
  * @tparam value_type The type of the value stored in the node.
  */
 template <typename value_type>
-class list<value_type>::Node {
+struct list<value_type>::Node {
   friend class list;
 
   value_type value_;
@@ -122,8 +132,8 @@ class list<value_type>::ListIterator {
   ListIterator() noexcept = default;
   explicit ListIterator(Node *node) noexcept : node_{node} {}
 
-  reference operator*() const;
-  pointer operator->() const;
+  reference operator*();
+  pointer operator->();
   ListIterator &operator++();
   ListIterator operator++(int);
   ListIterator &operator--();
@@ -145,7 +155,8 @@ class list<value_type>::ListConstIterator {
   friend class list;
 
   ListConstIterator() noexcept = default;
-  ListConstIterator(const Node *node) : node_{node} {}
+  explicit ListConstIterator(Node *node) : node_{node} {}
+
   const_reference operator*() const;
   const_pointer operator->() const;
   ListConstIterator &operator++();
@@ -167,9 +178,10 @@ class list<value_type>::ListConstIterator {
  * @return Reference to the value stored in the current node.
  */
 template <typename value_type>
-typename list<value_type>::reference list<value_type>::ListIterator::operator*()
-    const {
-  return node_->value_;
+typename list<value_type>::reference
+list<value_type>::ListIterator::operator*() {
+  static value_type default_value{};
+  return node_ ? node_->value_ : default_value;
 }
 
 /**
@@ -178,8 +190,8 @@ typename list<value_type>::reference list<value_type>::ListIterator::operator*()
  * @return Pointer to the value stored in the current node.
  */
 template <typename value_type>
-typename list<value_type>::pointer list<value_type>::ListIterator::operator->()
-    const {
+typename list<value_type>::pointer
+list<value_type>::ListIterator::operator->() {
   return &(node_->value_);
 }
 
@@ -271,7 +283,8 @@ bool list<value_type>::ListIterator::operator!=(
 template <typename value_type>
 typename list<value_type>::const_reference
 list<value_type>::ListConstIterator::operator*() const {
-  return node_->value_;
+  static value_type default_value{};
+  return node_ ? node_->value_ : default_value;
 }
 
 /**
@@ -554,7 +567,7 @@ typename list<value_type>::const_reference list<value_type>::back() const {
  */
 template <typename value_type>
 typename list<value_type>::iterator list<value_type>::begin() {
-  return iterator{head_};
+  return empty() ? iterator{nullptr} : iterator{head_};
 }
 
 /**
@@ -566,6 +579,118 @@ typename list<value_type>::iterator list<value_type>::begin() {
 template <typename value_type>
 typename list<value_type>::iterator list<value_type>::end() {
   return iterator{nullptr};
+}
+
+template <typename value_type>
+typename list<value_type>::const_iterator list<value_type>::cbegin() const {
+  return empty() ? const_iterator{nullptr} : const_iterator{head_};
+}
+
+template <typename value_type>
+typename list<value_type>::const_iterator list<value_type>::cend() const {
+  return const_iterator{nullptr};
+}
+
+/**
+ * @brief Checks whether the container is empty.
+ * @tparam value_type The type of elements stored in the list.
+ */
+template <typename value_type>
+bool list<value_type>::empty() const noexcept {
+  return size_ == 0;
+}
+
+/**
+ * @brief Returns the number of elements in the list.
+ * @return size_type The number of elements in the list.
+ * @tparam value_type The type of elements stored in the list.
+ */
+template <typename value_type>
+typename list<value_type>::size_type list<value_type>::size() const {
+  return size_;
+}
+
+template <typename value_type>
+typename list<value_type>::size_type list<value_type>::max_size() const {
+  return std::numeric_limits<size_type>::max();
+}
+
+/**
+ * @brief Clear the contents of the list.
+ * @tparam value_type The type of elements stored in the list.
+ */
+template <typename value_type>
+void list<value_type>::clear() noexcept {
+  while (!empty()) {
+    pop_back();
+  }
+}
+
+template <typename value_type>
+typename list<value_type>::iterator list<value_type>::insert(
+    iterator pos, const_reference value) {
+  Node *new_node = new Node(value);
+
+  if (!pos.node_) {
+    new_node->prev_ = tail_;
+
+    if (tail_) {
+      tail_->next_ = new_node;
+    } else {
+      head_ = new_node;
+    }
+
+    tail_ = new_node;
+
+  } else {
+    new_node->prev_ = pos.node_->prev_;
+    new_node->next_ = pos.node_;
+
+    if (pos.node_->prev_) {
+      pos.node_->prev_->next_ = new_node;
+    } else {
+      head_ = new_node;
+    }
+
+    pos.node_->prev_ = new_node;
+  }
+
+  ++size_;
+
+  return iterator(new_node);
+}
+
+/// @todo Не обработан iterator == nullptr. Ориганальная не обрабатывает.
+/// Мой вариант возвращает nullptr, при попытке разыменовать который вызывается
+/// конструктор по умолчанию для value_type{} (как и оригинальный). Но попытка
+/// удалить элемент по begin() в оригинальном списке вызывает double free or
+/// corruption (out) make: *** [Makefile:62: test] Aborted (core dumped)
+/// Оригинальная функция возвращает итератор, что удобно и логично(по крайней
+/// мере при реализации merge, избавляя от необходимости создавать буферные
+/// итераторы). Вопрос почему в ТЗ функция его не возвращает остается открытым
+template <typename value_type>
+typename list<value_type>::iterator list<value_type>::erase(iterator pos) {
+  if ((pos != end()) && (!empty())) {
+    Node *node_to_remove = pos.node_;
+    iterator next_it = iterator(node_to_remove->next_);
+
+    if (node_to_remove == head_) {
+      head_ = node_to_remove->next_;
+    } else if (node_to_remove == tail_) {
+      tail_ = node_to_remove->prev_;
+      tail_->next_ = nullptr;
+    } else {
+      node_to_remove->next_->prev_ = node_to_remove->prev_;
+      node_to_remove->prev_->next_ = node_to_remove->next_;
+    }
+
+    delete node_to_remove;
+    --size_;
+
+    return next_it;
+  }
+
+  return end();
 }
 
 /**
@@ -597,26 +722,6 @@ void list<value_type>::push_back(const_reference value) noexcept {
 }
 
 /**
- * @brief Checks whether the container is empty.
- * @tparam value_type The type of elements stored in the list.
- */
-template <typename value_type>
-bool list<value_type>::empty() noexcept {
-  return size_ == 0;
-}
-
-/**
- * @brief Clear the contents of the list.
- * @tparam value_type The type of elements stored in the list.
- */
-template <typename value_type>
-void list<value_type>::clear() noexcept {
-  while (!empty()) {
-    pop_back();
-  }
-}
-
-/**
  * @brief Removes the last element of the list.
  * @tparam value_type The type of elements stored in the list.
  */
@@ -640,14 +745,151 @@ void list<value_type>::pop_back() noexcept {
   }
 }
 
-/**
- * @brief Returns the number of elements in the list.
- * @return size_type The number of elements in the list.
- * @tparam value_type The type of elements stored in the list.
- */
 template <typename value_type>
-typename list<value_type>::size_type list<value_type>::size() const {
-  return size_;
+void list<value_type>::push_front(const_reference value) {
+  Node *new_node = new Node(value);
+
+  if (empty()) {
+    head_ = new_node;
+    tail_ = new_node;
+  } else {
+    new_node->next_ = head_;
+    head_->prev_ = new_node;
+    head_ = new_node;
+  }
+
+  ++size_;
+}
+
+/// @todo Не обработан случай, когда список пустой. Поведение оригинальной
+/// непредсказуемо
+template <typename value_type>
+void list<value_type>::pop_front() {
+  if (head_) {
+    Node *old_head = head_;
+    head_ = head_->next_;
+
+    if (head_) {
+      head_->prev_ = nullptr;
+    } else {
+      tail_ = nullptr;
+    }
+
+    delete old_head;
+    --size_;
+  }
+}
+
+template <typename value_type>
+void list<value_type>::swap(list &other) {
+  std::swap(head_, other.head_);
+  std::swap(tail_, other.tail_);
+  std::swap(size_, other.size_);
+}
+
+template <typename value_type>
+void list<value_type>::merge(list &other) {
+  auto this_it = begin();
+  auto other_it = other.begin();
+
+  while (this_it != end() && other_it != other.end()) {
+    if (*other_it < *this_it) {
+      insert(this_it, std::move(*other_it));
+      other_it = other.erase(other_it);
+    } else {
+      ++this_it;
+    }
+  }
+
+  while (other_it != other.end()) {
+    push_back(std::move(*other_it));
+    other_it = other.erase(other_it);
+  }
+}
+
+template <typename value_type>
+void list<value_type>::splice(const_iterator pos, list &other) {
+  if (this == &other || other.empty()) {
+    return;
+  }
+
+  if (empty()) {
+    swap(other);
+  } else {
+    auto pos_node = pos.node_;
+    auto first_other = other.head_;
+    auto last_other = other.tail_;
+
+    if (pos_node == head_) {
+      head_ = first_other;
+    } else {
+      pos_node->prev_->next_ = first_other;
+      first_other->prev_ = pos_node->prev_;
+    }
+
+    last_other->next_ = pos_node;
+    pos_node->prev_ = last_other;
+
+    other.head_ = nullptr;
+    other.tail_ = nullptr;
+
+    size_ += other.size_;
+    other.size_ = 0;
+  }
+}
+
+template <typename value_type>
+void list<value_type>::reverse() {
+  if (size_ < 2) {
+    return;
+  }
+
+  Node *current = head_;
+  Node *next_node = nullptr;
+  Node *prev_node = nullptr;
+
+  while (current != nullptr) {
+    next_node = current->next_;
+    current->next_ = prev_node;
+    current->prev_ = next_node;
+    prev_node = current;
+    current = next_node;
+  }
+
+  tail_ = head_;
+  head_ = prev_node;
+}
+
+template <typename value_type>
+void list<value_type>::unique() {
+  if (empty() || !head_->next_) {
+    return;
+  }
+
+  Node *current = head_;
+
+  while (current && current->next_) {
+    if (current->value_ == current->next_->value_) {
+      Node *node_to_remove = current->next_;
+      current->next_ = node_to_remove->next_;
+
+      if (node_to_remove->next_) {
+        node_to_remove->next_->prev_ = current;
+      } else {
+        tail_ = current;
+      }
+
+      delete node_to_remove;
+      --size_;
+    } else {
+      current = current->next_;
+    }
+  }
+}
+
+template <typename value_type>
+void list<value_type>::sort() {
+  
 }
 
 /**
@@ -701,6 +943,14 @@ bool list<value_type>::operator==(const list &l) const {
   }
 
   return true;
+}
+
+template <typename value_type>
+void list<value_type>::print() const {
+  for (auto it = cbegin(); it != cend(); ++it) {
+    std::cout << *it << " ";
+  }
+  std::cout << std::endl;
 }
 
 }  // namespace s21

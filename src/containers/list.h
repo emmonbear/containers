@@ -399,6 +399,10 @@ bool list<value_type>::ListConstIterator::operator!=(
  * This constructor initializes an empty list and appends `n`
  * default-initialized elements to the list.
  *
+ * @note We should not send a negative n, as the original (and our
+ * implementation) goes into an infinite loop. Exceptions are not thrown in this
+ * case.
+ *
  * @param n The number of elements to add to the list.
  * @tparam value_type The type of elements stored in the list.
  */
@@ -719,6 +723,8 @@ typename list<value_type>::iterator list<value_type>::insert(
  * iterator within the list before calling this function to avoid such issues.
  * Our implementation only removes an item if the list is not empty. We consider
  * it inexpedient to imitate the behaviour of the original method.
+ * The method returns void, while the original returns iterator. We implemented
+ * it as in the original function. Guys from pedago, pay more attention.
  *
  * @param pos An iterator pointing to the element to be removed.
  * @return An iterator pointing to the element following the removed element,
@@ -1101,6 +1107,7 @@ void list<value_type>::copy_from(const list &l) {
  */
 template <typename value_type>
 void list<value_type>::quick_sort(Node *left, Node *right) {
+  if (!left || !right) return;
   if (left != right && left != right->next) {
     Node *pivot = partition(left, right);
     quick_sort(left, pivot->prev);

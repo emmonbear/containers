@@ -34,13 +34,13 @@ class queue {
   const_reference back() const;
 
   // Queue Capacity
-  bool empty();
-  size_type size();
+  bool empty() const;
+  size_type size() const;
 
   // Queue Modifiers
   void push(const_reference value);
   void pop();
-  void swap(queue &other);
+  void swap(queue &other) noexcept;
 
  private:
   Container c;
@@ -52,41 +52,59 @@ queue<value_type, Container>::queue(
     : c(items) {}
 
 template <typename value_type, typename Container>
-queue<value_type, Container>::queue(const queue &q) {}
+queue<value_type, Container>::queue(const queue &q) : c(q.c) {}
 
 template <typename value_type, typename Container>
-queue<value_type, Container>::queue(queue &&q) {}
+queue<value_type, Container>::queue(queue &&q) : c(std::move(q.c)) {}
 
 template <typename value_type, typename Container>
 queue<value_type, Container>::~queue() {}
 
 template <typename value_type, typename Container>
 typename queue<value_type, Container>::queue &
-queue<value_type, Container>::operator=(queue &&q) {}
+queue<value_type, Container>::operator=(queue &&q) {
+  swap(q);
+
+  return *this;
+}
 
 template <typename value_type, typename Container>
 typename queue<value_type, Container>::const_reference
-queue<value_type, Container>::front() const {}
+queue<value_type, Container>::front() const {
+  return c.front();
+}
 
 template <typename value_type, typename Container>
 typename queue<value_type, Container>::const_reference
-queue<value_type, Container>::back() const {}
+queue<value_type, Container>::back() const {
+  return c.back();
+}
 
 template <typename value_type, typename Container>
-bool queue<value_type, Container>::empty() {}
+bool queue<value_type, Container>::empty() const {
+  return c.empty();
+}
 
 template <typename value_type, typename Container>
 typename queue<value_type, Container>::size_type
-queue<value_type, Container>::size() {}
+queue<value_type, Container>::size() const {
+  return c.size();
+}
 
 template <typename value_type, typename Container>
-void queue<value_type, Container>::push(const_reference value) {}
+void queue<value_type, Container>::push(const_reference value) {
+  c.push_back();
+}
 
 template <typename value_type, typename Container>
-void queue<value_type, Container>::pop() {}
+void queue<value_type, Container>::pop() {
+  c.pop_front();
+}
 
 template <typename value_type, typename Container>
-void queue<value_type, Container>::swap(queue &other) {}
+void queue<value_type, Container>::swap(queue &other) noexcept {
+  c.swap(other.c);
+}
 
 }  // namespace s21
 

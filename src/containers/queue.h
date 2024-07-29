@@ -39,15 +39,18 @@ class queue {
   ~queue();
   queue &operator=(queue &&q);
 
-  /// Queue Element access
+  // Queue Element access
+
   const_reference front() const;
   const_reference back() const;
 
   // Queue Capacity
+
   bool empty() const;
   size_type size() const;
 
   // Queue Modifiers
+
   void push(const_reference value);
   void pop();
   void swap(queue &other) noexcept;
@@ -144,6 +147,10 @@ queue<value_type, Container>::operator=(queue &&q) {
  *
  * Provides access to the first element in the queue without modifying it.
  * If the queue is empty, the behavior is undefined.
+ *
+ * @note The original queue results in undefined behaviour when trying to call a
+ * method for an empty list. Our implementation throws an exception.
+ * @throw out_of_range if the queue is empty.
  * @return A constant reference to the first element in the queue.
  * @tparam value_type The type of elements stored in the queue.
  * @tparam Container The type of the underlying container used to store the
@@ -162,6 +169,10 @@ queue<value_type, Container>::front() const {
  *
  * Provides access to the last element in the queue without modifying it.
  * If the queue is empty, the behavior is undefined.
+ *
+ * @note The original queue results in undefined behaviour when trying to call a
+ * method for an empty list. Our implementation throws an exception.
+ * @throw out_of_range if the queue is empty.
  * @return A constant reference to the last element in the queue.
  * @tparam value_type The type of elements stored in the queue.
  * @tparam Container The type of the underlying container used to store the
@@ -221,7 +232,7 @@ queue<value_type, Container>::size() const {
  */
 template <typename value_type, typename Container>
 void queue<value_type, Container>::push(const_reference value) {
-  c.push_back();
+  c.push_back(value);
 }
 
 /**

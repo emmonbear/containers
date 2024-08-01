@@ -28,6 +28,7 @@ namespace s21 {
  * such as in a static array, and makes adding a new element to the container
  * more user-friendly.
  *
+ * @tparam value_type The type of the value stored in the node.
  */
 template <typename T>
 class list {
@@ -51,6 +52,7 @@ class list {
                                     ///< type of values stored in the list.
 
   // List Functions
+
   list() noexcept = default;
   explicit list(size_type n);
   list(std::initializer_list<value_type> const &items);
@@ -77,6 +79,7 @@ class list {
   size_type max_size() const;
 
   // List Modifiers
+
   void clear() noexcept;
   iterator insert(iterator pos, const_reference value);
   iterator erase(iterator pos);
@@ -92,6 +95,7 @@ class list {
   void sort();
 
   // Other
+
   bool operator==(const list &l) const;
   void print() const;
 
@@ -186,35 +190,29 @@ class list<value_type>::ListConstIterator {
 
 /**
  * @brief Dereference operator.
- * @tparam value_type The type of elements stored in the list.
  * @return Reference to the value stored in the current node.
  */
 template <typename value_type>
-typename list<value_type>::reference
-list<value_type>::ListIterator::operator*() {
+auto list<value_type>::ListIterator::operator*() -> reference {
   static value_type default_value{};
   return node_ ? node_->value : default_value;
 }
 
 /**
  * @brief Arrow operator.
- * @tparam value_type The type of elements stored in the list.
  * @return Pointer to the value stored in the current node.
  */
 template <typename value_type>
-typename list<value_type>::pointer
-list<value_type>::ListIterator::operator->() {
+auto list<value_type>::ListIterator::operator->() -> pointer {
   return &(node_->value);
 }
 
 /**
  * @brief Pre-increment operator (++i).
- * @tparam value_type The type of elements stored in the list.
  * @return Reference to the updated iterator.
  */
 template <typename value_type>
-typename list<value_type>::ListIterator::ListIterator &
-list<value_type>::ListIterator::operator++() {
+auto list<value_type>::ListIterator::operator++() -> ListIterator & {
   node_ = node_->next;
 
   return *this;
@@ -222,12 +220,10 @@ list<value_type>::ListIterator::operator++() {
 
 /**
  * @brief Post-increment operator (i++).
- * @tparam value_type The type of elements stored in the list.
  * @return A copy of the iterator before the increment.
  */
 template <typename value_type>
-typename list<value_type>::ListIterator::ListIterator
-list<value_type>::ListIterator::operator++(int) {
+auto list<value_type>::ListIterator::operator++(int) -> ListIterator {
   ListIterator tmp{*this};
   ++(*this);
 
@@ -236,12 +232,10 @@ list<value_type>::ListIterator::operator++(int) {
 
 /**
  * @brief Pre-decrement operator (--i).
- * @tparam value_type The type of elements stored in the list.
  * @return Reference to the updated iterator.
  */
 template <typename value_type>
-typename list<value_type>::ListIterator::ListIterator &
-list<value_type>::ListIterator::operator--() {
+auto list<value_type>::ListIterator::operator--() -> ListIterator & {
   node_ = node_->prev;
 
   return *this;
@@ -249,12 +243,10 @@ list<value_type>::ListIterator::operator--() {
 
 /**
  * @brief Post-decrement operator (i--).
- * @tparam value_type The type of elements stored in the list.
  * @return A copy of the iterator before decrementing.
  */
 template <typename value_type>
-typename list<value_type>::ListIterator::ListIterator
-list<value_type>::ListIterator::operator--(int) {
+auto list<value_type>::ListIterator::operator--(int) -> ListIterator {
   ListIterator tmp{*this};
   --(*this);
 
@@ -263,7 +255,6 @@ list<value_type>::ListIterator::operator--(int) {
 
 /**
  * @brief Equality comparison operator.
- * @tparam value_type The type of elements stored in the list.
  * @param other The iterator to compare against.
  * @return true if both iterators point to the same node, false otherwise.
  */
@@ -275,7 +266,6 @@ bool list<value_type>::ListIterator::operator==(
 
 /**
  * @brief Inequality comparison operator.
- * @tparam value_type The type of elements stored in the list.
  * @param other The iterator to compare against.
  * @return true if the iterators point to different nodes, false otherwise.
  */
@@ -289,35 +279,29 @@ bool list<value_type>::ListIterator::operator!=(
 
 /**
  * @brief Dereference operator.
- * @tparam value_type The type of elements stored in the list.
  * @return const_reference A reference to the value of the current node.
  */
 template <typename value_type>
-typename list<value_type>::const_reference
-list<value_type>::ListConstIterator::operator*() const {
+auto list<value_type>::ListConstIterator::operator*() const -> const_reference {
   static value_type default_value{};
   return node_ ? node_->value : default_value;
 }
 
 /**
  * @brief Member access operator.
- * @tparam value_type The type of elements stored in the list.
  * @return const_pointer A pointer to the value of the current node.
  */
 template <typename value_type>
-typename list<value_type>::const_pointer
-list<value_type>::ListConstIterator::operator->() const {
+auto list<value_type>::ListConstIterator::operator->() const -> const_pointer {
   return &(node_->value);
 }
 
 /**
  * @brief Pre-increment operator (++i).
- * @tparam value_type The type of elements stored in the list.
  * @return Reference to the updated iterator.
  */
 template <typename value_type>
-typename list<value_type>::ListConstIterator &
-list<value_type>::ListConstIterator::operator++() {
+auto list<value_type>::ListConstIterator::operator++() -> ListConstIterator & {
   node_ = node_->next;
 
   return (*this);
@@ -325,12 +309,10 @@ list<value_type>::ListConstIterator::operator++() {
 
 /**
  * @brief Post-increment operator (i++).
- * @tparam value_type The type of elements stored in the list.
  * @return A copy of the iterator before the increment.
  */
 template <typename value_type>
-typename list<value_type>::ListConstIterator
-list<value_type>::ListConstIterator::operator++(int) {
+auto list<value_type>::ListConstIterator::operator++(int) -> ListConstIterator {
   ListConstIterator tmp{*this};
   ++(*this);
 
@@ -339,12 +321,10 @@ list<value_type>::ListConstIterator::operator++(int) {
 
 /**
  * @brief Pre-decrement operator (--i).
- * @tparam value_type The type of elements stored in the list.
  * @return Reference to the updated iterator.
  */
 template <typename value_type>
-typename list<value_type>::ListConstIterator &
-list<value_type>::ListConstIterator::operator--() {
+auto list<value_type>::ListConstIterator::operator--() -> ListConstIterator & {
   node_ = node_->prev;
 
   return (*this);
@@ -352,12 +332,10 @@ list<value_type>::ListConstIterator::operator--() {
 
 /**
  * @brief Post-decrement operator (i--).
- * @tparam value_type The type of elements stored in the list.
  * @return A copy of the iterator before decrementing.
  */
 template <typename value_type>
-typename list<value_type>::ListConstIterator
-list<value_type>::ListConstIterator::operator--(int) {
+auto list<value_type>::ListConstIterator::operator--(int) -> ListConstIterator {
   ListConstIterator tmp{*this};
   --(*this);
 
@@ -366,7 +344,6 @@ list<value_type>::ListConstIterator::operator--(int) {
 
 /**
  * @brief Equality comparison operator.
- * @tparam value_type The type of elements stored in the list.
  * @param other The iterator to compare against.
  * @return true if both iterators point to the same node, false otherwise.
  */
@@ -378,7 +355,6 @@ bool list<value_type>::ListConstIterator::operator==(
 
 /**
  * @brief Inequality comparison operator.
- * @tparam value_type The type of elements stored in the list.
  * @param other The iterator to compare against.
  * @return true if the iterators point to different nodes, false otherwise.
  */
@@ -404,7 +380,6 @@ bool list<value_type>::ListConstIterator::operator!=(
  * case.
  *
  * @param n The number of elements to add to the list.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 list<value_type>::list(size_type n) {
@@ -422,7 +397,6 @@ list<value_type>::list(size_type n) {
  * from the given initializer list to the end of the list.
  *
  * @param items An initializer list of values to populate the list.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 list<value_type>::list(std::initializer_list<value_type> const &items) {
@@ -441,7 +415,6 @@ list<value_type>::list(std::initializer_list<value_type> const &items) {
  * elements from `l` to the new list using the `copy_from` method.
  *
  * @param l The list to be copied.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 list<value_type>::list(const list &l)
@@ -457,11 +430,10 @@ list<value_type>::list(const list &l)
  * Copies the contents of list @p l into the current list.
  *
  * @param l The list to copy from.
- * @tparam value_type The type of elements stored in the list.
  * @return Reference to the current list object after copying.
  */
 template <typename value_type>
-typename list<value_type>::list &list<value_type>::operator=(const list &l) {
+auto list<value_type>::operator=(const list &l) -> list & {
   if (this != l) {
     clear();
     copy_from(l);
@@ -480,7 +452,6 @@ typename list<value_type>::list &list<value_type>::operator=(const list &l) {
  * empty state.
  *
  * @param l The list to move from.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 list<value_type>::list(list &&l)
@@ -499,10 +470,9 @@ list<value_type>::list(list &&l)
  * reference to the modified list.
  * @param l The list to move from.
  * @return list reference
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
-typename list<value_type>::list &list<value_type>::operator=(list &&l) {
+auto list<value_type>::operator=(list &&l) -> list & {
   if (this != &l) {
     clear();
     head_ = l.head_;
@@ -519,13 +489,6 @@ typename list<value_type>::list &list<value_type>::operator=(list &&l) {
 
 /**
  * @brief Destructor for the list class.
- *
- * @details
- *
- * The destructor calls the clear() method to free all elements of the list,
- * preventing memory leaks
- *
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 list<value_type>::~list() noexcept {
@@ -534,12 +497,11 @@ list<value_type>::~list() noexcept {
 
 /**
  * @brief Access the first element.
- * @tparam value_type The type of elements stored in the list.
  * @return const_reference A reference to the first element in the list.
  * @throw std::out_of_range if the list is empty.
  */
 template <typename value_type>
-typename list<value_type>::const_reference list<value_type>::front() const {
+auto list<value_type>::front() const -> const_reference {
   if (empty()) {
     throw std::out_of_range("list is empty");
   }
@@ -549,12 +511,11 @@ typename list<value_type>::const_reference list<value_type>::front() const {
 
 /**
  * @brief Access the last element.
- * @tparam value_type The type of elements stored in the list.
  * @return const_reference A reference to the last element in the list.
  * @throw std::out_of_range if the list is empty.
  */
 template <typename value_type>
-typename list<value_type>::const_reference list<value_type>::back() const {
+auto list<value_type>::back() const -> const_reference {
   if (empty()) {
     throw std::out_of_range("list is empty");
   }
@@ -564,33 +525,30 @@ typename list<value_type>::const_reference list<value_type>::back() const {
 
 /**
  * @brief Returns an iterator to the beginning of the list.
- * @tparam value_type The type of the value stored in the list.
  * @return iterator An iterator to the first element in the list.
  */
 template <typename value_type>
-typename list<value_type>::iterator list<value_type>::begin() {
+auto list<value_type>::begin() -> iterator {
   return empty() ? iterator{nullptr} : iterator{head_};
 }
 
 /**
  * @brief Returns an iterator to the end of the list.
- * @tparam value_type The type of the value stored in the list.
  * @return iterator An iterator to the element following the last element in the
  * list.
  */
 template <typename value_type>
-typename list<value_type>::iterator list<value_type>::end() {
+auto list<value_type>::end() -> iterator {
   return iterator{nullptr};
 }
 
 /**
  * @brief Returns a constant iterator to the beginning of the list.
- * @tparam value_type The type of the value stored in the list.
  * @return A constant iterator to the beginning of the list or `nullptr` if the
  * list is empty.
  */
 template <typename value_type>
-typename list<value_type>::const_iterator list<value_type>::cbegin() const {
+auto list<value_type>::cbegin() const -> const_iterator {
   return empty() ? const_iterator{nullptr} : const_iterator{head_};
 }
 
@@ -601,17 +559,15 @@ typename list<value_type>::const_iterator list<value_type>::cbegin() const {
  * This function returns a constant iterator pointing to one past the last
  * element of the list, which is represented by `nullptr`.
  *
- * @tparam value_type The type of the value stored in the list.
  * @return A constant iterator to the end of the list.
  */
 template <typename value_type>
-typename list<value_type>::const_iterator list<value_type>::cend() const {
+auto list<value_type>::cend() const -> const_iterator {
   return const_iterator{nullptr};
 }
 
 /**
  * @brief Checks whether the container is empty.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 bool list<value_type>::empty() const noexcept {
@@ -621,10 +577,9 @@ bool list<value_type>::empty() const noexcept {
 /**
  * @brief Returns the number of elements in the list.
  * @return size_type The number of elements in the list.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
-typename list<value_type>::size_type list<value_type>::size() const {
+auto list<value_type>::size() const -> size_type {
   return size_;
 }
 
@@ -635,17 +590,15 @@ typename list<value_type>::size_type list<value_type>::size() const {
  * This function returns the largest possible value for the size of the list,
  * which is determined by the implementation-defined limit for the size type.
  *
- * @tparam value_type The type of elements stored in the list.
  * @return The maximum possible number of elements the list can hold.
  */
 template <typename value_type>
-typename list<value_type>::size_type list<value_type>::max_size() const {
+auto list<value_type>::max_size() const -> size_type {
   return std::numeric_limits<size_type>::max();
 }
 
 /**
  * @brief Clear the contents of the list.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::clear() noexcept {
@@ -669,11 +622,9 @@ void list<value_type>::clear() noexcept {
  * the end of the list.
  * @param value The value to be inserted into the list.
  * @return An iterator pointing to the newly inserted element.
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
-typename list<value_type>::iterator list<value_type>::insert(
-    iterator pos, const_reference value) {
+auto list<value_type>::insert(iterator pos, const_reference value) -> iterator {
   Node *new_node = new Node(value);
 
   if (!pos.node_) {
@@ -732,7 +683,7 @@ typename list<value_type>::iterator list<value_type>::insert(
  * iterator.
  */
 template <typename value_type>
-typename list<value_type>::iterator list<value_type>::erase(iterator pos) {
+auto list<value_type>::erase(iterator pos) -> iterator {
   if ((pos != end()) && (!empty())) {
     Node *node_to_remove = pos.node_;
     iterator next_it = iterator(node_to_remove->next);
@@ -766,7 +717,6 @@ typename list<value_type>::iterator list<value_type>::erase(iterator pos) {
  * printed to the standard error stream (std::cerr)
  *
  * @param value The value to be added to the list.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::push_back(const_reference value) noexcept {
@@ -786,7 +736,6 @@ void list<value_type>::push_back(const_reference value) noexcept {
 
 /**
  * @brief Removes the last element of the list.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::pop_back() noexcept {
@@ -820,7 +769,6 @@ void list<value_type>::pop_back() noexcept {
  * the new node. The size of the list is increased by one.
  *
  * @param value The value to be inserted at the beginning of the list.
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::push_front(const_reference value) {
@@ -853,7 +801,6 @@ void list<value_type>::push_front(const_reference value) {
  * the function is currently undefined. It is recommended to check if the list
  * is empty before calling this function to avoid unexpected behavior.
  *
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::pop_front() {
@@ -884,7 +831,7 @@ void list<value_type>::pop_front() {
  *
  * @param other The list to swap contents with. It must be of the same type as
  * this list.
- * @tparam value_type The type of the elements stored in the list.
+
  */
 template <typename value_type>
 void list<value_type>::swap(list &other) {
@@ -904,7 +851,6 @@ void list<value_type>::swap(list &other) {
  *
  * @param other The list to merge with this list. It must be of the same type as
  * this list and must be sorted.
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::merge(list &other) {
@@ -943,7 +889,6 @@ void list<value_type>::merge(list &other) {
  * should be inserted. This iterator should be valid for this list.
  * @param other The list whose elements are to be spliced into this list. It
  * must be of the same type as this list.
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::splice(const_iterator pos, list &other) {
@@ -987,7 +932,6 @@ void list<value_type>::splice(const_iterator pos, list &other) {
  * previously the first node. If the list has fewer than two elements, the
  * function returns without making any changes.
  *
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::reverse() {
@@ -1020,8 +964,6 @@ void list<value_type>::reverse() {
  * are identical to the next node's value. Only consecutive duplicate elements
  * are removed, and the list is modified in place. If the list is empty or has
  * fewer than two elements, the function returns without making any changes.
- *
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::unique() {
@@ -1058,8 +1000,6 @@ void list<value_type>::unique() {
  * This function uses the quicksort algorithm to sort the elements of the list.
  * It will only perform sorting if the list contains more than one element. If
  * the list is empty or contains a single element, no action is taken.
- *
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::sort() {
@@ -1078,7 +1018,6 @@ void list<value_type>::sort() {
  * current list.
  *
  * @param l The list from which elements will be copied.
- * @tparam value_type The type of elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::copy_from(const list &l) {
@@ -1103,7 +1042,6 @@ void list<value_type>::copy_from(const list &l) {
  *
  * @param left Pointer to the starting node of the segment to be sorted.
  * @param right Pointer to the ending node of the segment to be sorted.
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::quick_sort(Node *left, Node *right) {
@@ -1130,11 +1068,9 @@ void list<value_type>::quick_sort(Node *left, Node *right) {
  * @param right Pointer to the ending node (pivot) of the segment to be
  * partitioned.
  * @return Pointer to the node that holds the pivot element after partitioning.
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
-typename list<value_type>::Node *list<value_type>::partition(Node *left,
-                                                             Node *right) {
+auto list<value_type>::partition(Node *left, Node *right) -> Node * {
   value_type pivot_value = right->value;
   Node *i = left->prev;
 
@@ -1155,7 +1091,6 @@ typename list<value_type>::Node *list<value_type>::partition(Node *left,
  * @brief Equality operator to compare two lists.
  *
  * @param l The list to compare with the current list.
- * @tparam value_type The type of elements stored in the list.
  * @retval true if both lists have the same size and all corresponding elements
  * are equal.
  * @retval false if the sizes of the lists are different or if at least one
@@ -1190,8 +1125,6 @@ bool list<value_type>::operator==(const list &l) const {
  * This function iterates over all elements in the list, starting from the
  * beginning and ending at the end, and prints each element followed by a space.
  * After printing all elements, it outputs a newline character.
- *
- * @tparam value_type The type of the elements stored in the list.
  */
 template <typename value_type>
 void list<value_type>::print() const {

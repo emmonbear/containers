@@ -9,70 +9,196 @@
  *
  */
 
+#include <list>
+#include <queue>
+
 #include "../../s21_containers.h"
 #include "../main_test.h"
 
+template <typename T>
+static bool compare_queues(std::queue<T, std::list<int>> &std_queue,
+                           s21::queue<T, s21::list<int>> &s21_queue) {
+  if (std_queue.size() != s21_queue.size()) {
+    return false;
+  }
+
+  while (!std_queue.empty() && !s21_queue.empty()) {
+    if (std_queue.front() != s21_queue.front()) {
+      return false;
+    }
+
+    std_queue.pop();
+    s21_queue.pop();
+  }
+
+  return true;
+}
+
+template <typename T>
+static bool compare_queues(std::queue<T> &std_queue, s21::queue<T> &s21_queue) {
+  if (std_queue.size() != s21_queue.size()) {
+    return false;
+  }
+
+  while (!std_queue.empty() && !s21_queue.empty()) {
+    if (s21_queue.front() != std_queue.front()) {
+      return false;
+    }
+
+    std_queue.pop();
+    s21_queue.pop();
+  }
+
+  return true;
+}
+
 TEST(QueueTest, DefaultConstructor) {
   s21::queue<int> l;
-
   EXPECT_TRUE(l.empty());
 }
 
-TEST(QueueTest, CopyConstructor) {
-  s21::queue<int> original;
-  original.push(1);
-  original.push(2);
-  original.push(3);
+TEST(QueueTest, CopyConstructorContainer1) {
+  s21::list<int> s21_l{1, 2, 3};
+  std::list<int> std_l{1, 2, 3};
 
-  s21::queue<int> copy(original);
+  s21::queue<int, s21::list<int>> s21_queue(s21_l);
+  std::queue<int, std::list<int>> std_queue(std_l);
 
-  EXPECT_EQ(copy.size(), original.size());
+  EXPECT_EQ(s21_queue.size(), std_queue.size());
 
-  while (!original.empty()) {
-    EXPECT_EQ(copy.front(), original.front());
-    copy.pop();
-    original.pop();
-  }
-
-  original.push(2);
-  original.push(3);
-  original.push(4);
-  s21::queue<int> copy2(original);
-  copy2.pop();
-  EXPECT_EQ(original.front(), 2);
-  EXPECT_EQ(copy2.front(), 3);
+  EXPECT_TRUE(compare_queues(std_queue, s21_queue));
 }
 
-TEST(QueueTest, InitializerListConstructor) {
-  s21::queue<int> q = {1, 2, 3, 4, 5};
+TEST(QueueTest, CopyConstructorContainer2) {
+  s21::list<int> s21_l{3, 4, 1, 2, 9};
+  std::list<int> std_l{3, 4, 1, 2, 9};
 
-  EXPECT_EQ(q.size(), 5);
+  s21::queue<int, s21::list<int>> s21_queue(s21_l);
+  std::queue<int, std::list<int>> std_queue(std_l);
 
-  EXPECT_EQ(q.front(), 1);
-  q.pop();
-  EXPECT_EQ(q.front(), 2);
-  q.pop();
-  EXPECT_EQ(q.front(), 3);
-  q.pop();
-  EXPECT_EQ(q.front(), 4);
-  q.pop();
-  EXPECT_EQ(q.front(), 5);
-  q.pop();
+  EXPECT_EQ(s21_queue.size(), std_queue.size());
 
-  EXPECT_TRUE(q.empty());
+  EXPECT_TRUE(compare_queues(std_queue, s21_queue));
 }
 
-TEST(QueueTest, MoveConstructor) {
-  s21::queue<int> original{1, 2, 3};
-  s21::queue<int> moved(std::move(original));
+TEST(QueueTest, CopyConstructorContainerFail) {
+  s21::list<int> s21_l{3, 4, 1, 2, 9};
+  std::list<int> std_l{3, 4, 1, 2, 9, 2, 1};
 
-  EXPECT_TRUE(original.empty());
-  EXPECT_EQ(moved.size(), 3);
-  EXPECT_EQ(moved.front(), 1);
-  moved.pop();
-  EXPECT_EQ(moved.front(), 2);
-  moved.pop();
-  EXPECT_EQ(moved.front(), 3);
-  moved.pop();
-  EXPECT_TRUE(moved.empty());
+  s21::queue<int, s21::list<int>> s21_queue(s21_l);
+  std::queue<int, std::list<int>> std_queue(std_l);
+
+  EXPECT_FALSE(compare_queues(std_queue, s21_queue));
+}
+
+TEST(QueueTest, MoveConstructorContainer1) {
+  s21::list<int> s21_l{1, 2, 3};
+  std::list<int> std_l{1, 2, 3};
+
+  s21::queue<int, s21::list<int>> s21_queue(std::move(s21_l));
+  std::queue<int, std::list<int>> std_queue(std::move(std_l));
+  EXPECT_EQ(s21_queue.size(), std_queue.size());
+
+  EXPECT_TRUE(s21_l.empty());
+  EXPECT_TRUE(std_l.empty());
+  EXPECT_TRUE(compare_queues(std_queue, s21_queue));
+}
+
+TEST(QueueTest, MoveConstructorContainer2) {
+  s21::list<int> s21_l{3, 4, 1, 2, 9};
+  std::list<int> std_l{3, 4, 1, 2, 9};
+
+  s21::queue<int, s21::list<int>> s21_queue(std::move(s21_l));
+  std::queue<int, std::list<int>> std_queue(std::move(std_l));
+  EXPECT_EQ(s21_queue.size(), std_queue.size());
+
+  EXPECT_TRUE(s21_l.empty());
+  EXPECT_TRUE(std_l.empty());
+  EXPECT_TRUE(compare_queues(std_queue, s21_queue));
+}
+
+TEST(QueueTest, CopyConstructor1) {
+  s21::queue<int> s21_original;
+  std::queue<int> std_original;
+
+  s21_original.push(1);
+  s21_original.push(2);
+  s21_original.push(3);
+
+  std_original.push(1);
+  std_original.push(2);
+  std_original.push(3);
+
+  s21::queue<int> s21_copy(s21_original);
+  std::queue<int> std_copy(std_original);
+
+  EXPECT_EQ(s21_original.size(), std_original.size());
+  EXPECT_EQ(std_copy.size(), s21_copy.size());
+
+  EXPECT_TRUE(compare_queues(std_copy, s21_copy));
+}
+
+TEST(QueueTest, CopyConstructorFail) {
+  s21::queue<int> s21_original;
+  std::queue<int> std_original;
+
+  s21_original.push(1);
+  s21_original.push(2);
+  s21_original.push(3);
+  s21_original.push(6);
+
+  std_original.push(1);
+  std_original.push(2);
+  std_original.push(3);
+
+  s21::queue<int> s21_copy(s21_original);
+  std::queue<int> std_copy(std_original);
+
+  EXPECT_NE(s21_original.size(), std_original.size());
+  EXPECT_NE(std_copy.size(), s21_copy.size());
+
+  EXPECT_FALSE(compare_queues(std_copy, s21_copy));
+}
+
+TEST(QueueTest, MoveConstructor1) {
+  s21::queue<int> s21_original;
+  std::queue<int> std_original;
+
+  s21_original.push(1);
+  s21_original.push(2);
+  s21_original.push(3);
+
+  std_original.push(1);
+  std_original.push(2);
+  std_original.push(3);
+
+  s21::queue<int> s21_copy(std::move(s21_original));
+  std::queue<int> std_copy(std::move(std_original));
+
+  EXPECT_EQ(s21_original.size(), std_original.size());
+  EXPECT_EQ(std_copy.size(), s21_copy.size());
+
+  EXPECT_TRUE(compare_queues(std_copy, s21_copy));
+}
+
+TEST(QueueTest, PushLvalue) {
+  s21::queue<int> s21_original;
+  std::queue<int> std_original;
+
+  int num = 1;
+  s21_original.push(num);
+  s21_original.push(num);
+  s21_original.push(num);
+
+  std_original.push(num);
+  std_original.push(num);
+  std_original.push(num);
+
+  s21::queue<int> s21_copy(std::move(s21_original));
+  std::queue<int> std_copy(std::move(std_original));
+
+  EXPECT_EQ(s21_original.size(), std_original.size());
+  EXPECT_EQ(std_copy.size(), s21_copy.size());
+
+  EXPECT_TRUE(compare_queues(std_copy, s21_copy));
 }

@@ -130,8 +130,7 @@ queue<value_type, Container>::operator=(queue &&q) {
  * @return A constant reference to the first element in the queue.
  */
 template <typename value_type, typename Container>
-typename queue<value_type, Container>::const_reference
-queue<value_type, Container>::front() const {
+auto queue<value_type, Container>::front() const -> const_reference {
   return c.front();
 }
 
@@ -149,8 +148,7 @@ queue<value_type, Container>::front() const {
  * @return A constant reference to the last element in the queue.
  */
 template <typename value_type, typename Container>
-typename queue<value_type, Container>::const_reference
-queue<value_type, Container>::back() const {
+auto queue<value_type, Container>::back() const -> const_reference {
   return c.back();
 }
 
@@ -177,8 +175,7 @@ bool queue<value_type, Container>::empty() const {
  * @return The number of elements in the queue.
  */
 template <typename value_type, typename Container>
-typename queue<value_type, Container>::size_type
-queue<value_type, Container>::size() const {
+auto queue<value_type, Container>::size() const -> size_type {
   return c.size();
 }
 

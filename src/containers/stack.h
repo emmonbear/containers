@@ -29,7 +29,6 @@ class stack {
                                             ///< the stack.
   using size_type = typename Container::size_type;  ///< Alias for the type used
                                                     ///< for size measurements.
-  using container_type = Container;
   // Stack Member functions
 
   stack() : c{Container()} {}

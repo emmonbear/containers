@@ -18,6 +18,10 @@
 template <typename T>
 static bool compare_stacks(std::stack<T, std::list<int>> &std_stack,
                            s21::stack<T, s21::list<int>> &s21_stack) {
+  if (std_stack.size() != s21_stack.size()) {
+    return false;
+  }
+
   while (!std_stack.empty() && !s21_stack.empty()) {
     if (std_stack.top() != s21_stack.top()) {
       return false;
@@ -31,8 +35,11 @@ static bool compare_stacks(std::stack<T, std::list<int>> &std_stack,
 }
 
 template <typename T>
-static bool compare_stacks(std::stack<T> &std_stack,
-                           s21::stack<T> &s21_stack) {
+static bool compare_stacks(std::stack<T> &std_stack, s21::stack<T> &s21_stack) {
+  if (std_stack.size() != s21_stack.size()) {
+    return false;
+  }
+
   while (!std_stack.empty() && !s21_stack.empty()) {
     if (std_stack.top() != s21_stack.top()) {
       return false;
@@ -51,7 +58,7 @@ TEST(StackTest, DefaultConstructor) {
   EXPECT_TRUE(s.empty());
 }
 
-TEST(QueueTest, CopyConstructorContainer1) {
+TEST(StackTest, CopyConstructorContainer1) {
   s21::list<int> s21_l{1, 2, 3};
   std::list<int> std_l{1, 2, 3};
 
@@ -62,7 +69,7 @@ TEST(QueueTest, CopyConstructorContainer1) {
   EXPECT_TRUE(compare_stacks(std_stack, s21_stack));
 }
 
-TEST(QueueTest, CopyConstructorContainer2) {
+TEST(StackTest, CopyConstructorContainer2) {
   s21::list<int> s21_l{3, 4, 1, 2, 9};
   std::list<int> std_l{3, 4, 1, 2, 9};
 
@@ -74,7 +81,7 @@ TEST(QueueTest, CopyConstructorContainer2) {
   EXPECT_TRUE(compare_stacks(std_stack, s21_stack));
 }
 
-TEST(QueueTest, CopyConstructorContainerFail) {
+TEST(StackTest, CopyConstructorContainerFail) {
   s21::list<int> s21_l{1, 2, 3, 4};
   std::list<int> std_l{1, 2, 3};
 
@@ -84,7 +91,7 @@ TEST(QueueTest, CopyConstructorContainerFail) {
   EXPECT_FALSE(compare_stacks(std_stack, s21_stack));
 }
 
-TEST(QueueTest, MoveConstructorContainer1) {
+TEST(StackTest, MoveConstructorContainer1) {
   s21::list<int> s21_l{1, 2, 3};
   std::list<int> std_l{1, 2, 3};
 
@@ -97,7 +104,7 @@ TEST(QueueTest, MoveConstructorContainer1) {
   EXPECT_TRUE(compare_stacks(std_stack, s21_stack));
 }
 
-TEST(QueueTest, MoveConstructorContainer2) {
+TEST(StackTest, MoveConstructorContainer2) {
   s21::list<int> s21_l{3, 4, 1, 2, 9};
   std::list<int> std_l{3, 4, 1, 2, 9};
 
@@ -112,7 +119,7 @@ TEST(QueueTest, MoveConstructorContainer2) {
   EXPECT_TRUE(compare_stacks(std_stack, s21_stack));
 }
 
-TEST(QueueTest, CopyConstructor1) {
+TEST(StackTest, CopyConstructor1) {
   s21::stack<int> s21_original;
   std::stack<int> std_original;
 
@@ -133,7 +140,7 @@ TEST(QueueTest, CopyConstructor1) {
   EXPECT_TRUE(compare_stacks(std_copy, s21_copy));
 }
 
-TEST(QueueTest, CopyConstructorFail) {
+TEST(StackTest, CopyConstructorFail) {
   s21::stack<int> s21_original;
   std::stack<int> std_original;
 
@@ -155,7 +162,7 @@ TEST(QueueTest, CopyConstructorFail) {
   EXPECT_FALSE(compare_stacks(std_copy, s21_copy));
 }
 
-TEST(QueueTest, MoveConstructor1) {
+TEST(StackTest, MoveConstructor1) {
   s21::stack<int> s21_original;
   std::stack<int> std_original;
 
@@ -176,7 +183,7 @@ TEST(QueueTest, MoveConstructor1) {
   EXPECT_TRUE(compare_stacks(std_copy, s21_copy));
 }
 
-TEST(QueueTest, PushLvalue) {
+TEST(StackTest, PushLvalue) {
   s21::stack<int> s21_original;
   std::stack<int> std_original;
 

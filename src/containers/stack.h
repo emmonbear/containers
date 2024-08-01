@@ -32,16 +32,17 @@ class stack {
   using container_type = Container;
   // Stack Member functions
 
-  stack() : c(Container()) {}
-  explicit stack(const Container &s) : c(s) {}
-  explicit stack(Container &&s) : c(std::move(s)) {}
+  stack() : c{Container()} {}
+  stack(const Container &s);
+  stack(Container &&s);
+  stack(const stack &other);
+  stack(stack &&other);
   ~stack() {}
   stack &operator=(stack &&s);
 
   // Stack Element access
 
   const_reference top() const;
-  reference top();
 
   // Stack Capacity
 
@@ -59,23 +60,28 @@ class stack {
   Container c;
 };
 
+template <typename T, typename Container>
+stack<T, Container>::stack(const Container &s) : c(s) {}
+
+template <typename T, typename Container>
+stack<T, Container>::stack(Container &&other) : c(std::move(other)) {}
+
+template <typename T, typename Container>
+stack<T, Container>::stack(stack &&other) : c(std::move(other.c)) {}
+
 template <typename value_type, typename Container>
-typename stack<value_type, Container>::stack &
-stack<value_type, Container>::operator=(stack &&s) {
+auto stack<value_type, Container>::operator=(stack &&s) -> stack & {
   swap(s);
 
   return *this;
 }
 
-template <typename value_type, typename Container>
-typename stack<value_type, Container>::const_reference
-stack<value_type, Container>::top() const {
-  return c.back();
-}
+template <typename T, typename Container>
+stack<T, Container>::stack(const stack& other)  : c(std::move(other.c)) {}
+
 
 template <typename value_type, typename Container>
-typename stack<value_type, Container>::reference
-stack<value_type, Container>::top() {
+auto stack<value_type, Container>::top() const -> const_reference {
   return c.back();
 }
 
@@ -85,8 +91,7 @@ bool stack<value_type, Container>::empty() const {
 }
 
 template <typename value_type, typename Container>
-typename stack<value_type, Container>::size_type
-stack<value_type, Container>::size() {
+auto stack<value_type, Container>::size() -> size_type {
   return c.size();
 }
 

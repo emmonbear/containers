@@ -12,6 +12,8 @@
 #ifndef SRC_CONTAINERS_STACK_H_
 #define SRC_CONTAINERS_STACK_H_
 
+#include "./list.h"
+
 namespace s21 {
 
 template <typename T, typename Container = list<T>>

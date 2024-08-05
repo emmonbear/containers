@@ -81,8 +81,8 @@ class list {
   // List Modifiers
 
   void clear() noexcept;
-  iterator insert(iterator pos, const_reference value);
-  iterator erase(iterator pos);
+  iterator insert(const_iterator pos, const_reference value);
+  iterator erase(const_iterator pos);
   void push_back(const_reference value) noexcept;
   void pop_back() noexcept;
   void push_front(const_reference value);
@@ -153,6 +153,8 @@ class list<value_type>::ListIterator {
   ListIterator operator--(int);
   bool operator==(const ListIterator &other) const;
   bool operator!=(const ListIterator &other) const;
+
+  operator const_iterator() const noexcept { return const_iterator{node_}; }
 
  private:
   Node *node_{nullptr};  ///< Pointer to the node. Initially set to `nullptr`.
@@ -624,7 +626,8 @@ void list<value_type>::clear() noexcept {
  * @return An iterator pointing to the newly inserted element.
  */
 template <typename value_type>
-auto list<value_type>::insert(iterator pos, const_reference value) -> iterator {
+auto list<value_type>::insert(const_iterator pos, const_reference value)
+    -> iterator {
   Node *new_node = new Node(value);
 
   if (!pos.node_) {
@@ -683,7 +686,7 @@ auto list<value_type>::insert(iterator pos, const_reference value) -> iterator {
  * iterator.
  */
 template <typename value_type>
-auto list<value_type>::erase(iterator pos) -> iterator {
+auto list<value_type>::erase(const_iterator pos) -> iterator {
   if ((pos != end()) && (!empty())) {
     Node *node_to_remove = pos.node_;
     iterator next_it = iterator(node_to_remove->next);

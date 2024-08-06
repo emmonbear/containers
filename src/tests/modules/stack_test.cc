@@ -52,6 +52,24 @@ static bool compare_stacks(std::stack<T> &std_stack, s21::stack<T> &s21_stack) {
   return true;
 }
 
+template <typename T>
+static void print_stacks(std::stack<T, std::list<int>> &std_stack,
+                         s21::stack<T, s21::list<int>> &s21_stack) {
+  while (!std_stack.empty()) {
+    std::cout << "std_stack = " << std_stack.top() << ' ';
+    std_stack.pop();
+  }
+
+  std::cout << std::endl;
+
+  while (!s21_stack.empty()) {
+    std::cout << "s21_stack = " << s21_stack.top() << ' ';
+    s21_stack.pop();
+  }
+
+  std::cout << std::endl;
+}
+
 TEST(StackTest, DefaultConstructor) {
   s21::stack<int> s;
 
@@ -203,4 +221,33 @@ TEST(StackTest, PushLvalue) {
   EXPECT_EQ(std_copy.size(), s21_copy.size());
 
   EXPECT_TRUE(compare_stacks(std_copy, s21_copy));
+}
+
+TEST(StackTest, EmplaceEmpty) {
+  std::stack<int> std_s;
+  s21::stack<int> s21_s;
+
+  std_s.emplace(12);
+  s21_s.emplace(12);
+
+  EXPECT_EQ(std_s.size(), s21_s.size());
+  EXPECT_TRUE(compare_stacks(std_s, s21_s));
+}
+
+TEST(StackTest, Emplace) {
+  s21::list<int> s21_l{3, 4, 1, 2, 9};
+  std::list<int> std_l{3, 4, 1, 2, 9};
+
+  s21::stack<int, s21::list<int>> s21_stack(std::move(s21_l));
+  std::stack<int, std::list<int>> std_stack(std::move(std_l));
+
+  std_stack.emplace(12);
+  s21_stack.emplace(12);
+
+  EXPECT_EQ(s21_stack.size(), std_stack.size());
+
+  EXPECT_TRUE(s21_l.empty());
+  EXPECT_TRUE(std_l.empty());
+
+  EXPECT_TRUE(compare_stacks(std_stack, s21_stack));
 }

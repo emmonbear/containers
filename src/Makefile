@@ -33,7 +33,7 @@ TESTS_OBJ_PATH = $(addprefix $(OBJ_DIR)/tests/, $(TESTS_O))
 CC_FILES = $(TESTS_CC)
 H_FILES = $(CONTAINERS_H) $(TESTS_H)
 
-# LIST OF DIRECTORIES THAT MAKE SHOULD SEARCH
+# LIST OF DIRECTORIES THAT MAKE SHOULD SEARCH ================================#
 vpath %.cc $(TESTS_DIRS)
 vpath %.o $(OBJ_DIR)
 

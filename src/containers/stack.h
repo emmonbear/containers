@@ -57,6 +57,9 @@ class stack {
   void pop();
   void swap(stack &other) noexcept;
 
+  template <class... Args>
+  void emplace(Args &&...args);
+
  private:
   Container c;
 };
@@ -247,6 +250,12 @@ void stack<value_type, Container>::pop() {
 template <typename value_type, typename Container>
 void stack<value_type, Container>::swap(stack &other) noexcept {
   std::swap(c, other.c);
+}
+
+template <typename value_type, typename Container>
+template <class... Args>
+void stack<value_type, Container>::emplace(Args &&...args) {
+  c.emplace_front(std::forward<Args>(args)...);
 }
 
 }  // namespace s21

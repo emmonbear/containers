@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef SRC_MODULES_TREE_H_
-#define SRC_MODULES_TREE_H_
+#ifndef SRC_CONTAINERS_TREE_H_
+#define SRC_CONTAINERS_TREE_H_
 
 #include <algorithm>         // for exchange()
 #include <initializer_list>  // for init_list type
@@ -1956,4 +1956,4 @@ auto tree<K, M>::const_iterator::operator*() const noexcept
 
 }  // namespace s21
 
-#endif  // SRC_MODULES_TREE_H_
+#endif  // SRC_CONTAINERS_TREE_H_

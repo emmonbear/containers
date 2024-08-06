@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef SRC_MODULES_VECTOR_H_
-#define SRC_MODULES_VECTOR_H_
+#ifndef SRC_CONTAINERS_VECTOR_H_
+#define SRC_CONTAINERS_VECTOR_H_
 
 #include <algorithm>         // for exchange(), fill(), copy()
 #include <initializer_list>  // for init_list type
@@ -1211,4 +1211,4 @@ auto vector<V>::iterator::operator*() -> reference {
 
 }  // namespace s21
 
-#endif  // SRC_MODULES_VECTOR_H_
+#endif  // SRC_CONTAINERS_VECTOR_H_

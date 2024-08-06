@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef SRC_MODULES_SET_H_
-#define SRC_MODULES_SET_H_
+#ifndef SRC_CONTAINERS_SET_H_
+#define SRC_CONTAINERS_SET_H_
 
 #include <initializer_list>  // for init_list type
 #include <limits>            // for max()
@@ -708,4 +708,4 @@ auto set<K>::const_iterator::operator*() const noexcept -> const_reference {
 
 }  // namespace s21
 
-#endif  // SRC_MODULES_SET_H_
+#endif  // SRC_CONTAINERS_SET_H_

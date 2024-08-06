@@ -7,23 +7,20 @@ CXXFLAGS = -Wall -Wextra -pedantic -std=c++17 -g
 LDFLAGS = -lgtest
 
 # ADDITIONAL FLAGS ===========================================================#
-GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 VALGRIND_FLAGS = --tool=memcheck --leak-check=yes
 VALGRIND_REPORT = val.txt
 
 # DIRECTORIES ================================================================#
 OBJ_DIR = ./obj
 TESTS_DIR = ./tests
-REPORT_DIR = ./report
 CONTAINERS_DIR = ./containers
 DOCS_DIR = ../docs
 
 # TARGET NAMES ===============================================================#
 TARGET = test
-GCOV = gcov_report
 
 # LIST OF FILES IN CONTAINERS ================================================#
-CONTAINERS_H = $(shell find $(SRC_INCLUDE_LIST_H_) -type f -name "*.h")
+CONTAINERS_H = $(shell find $(CONTAINERS_DIR) -type f -name "*.h")
 
 # LIST OF FILES AND DIRECTORIES IN TESTS =====================================#
 TESTS_DIRS = $(shell find $(TESTS_DIR) -type d)
@@ -42,19 +39,12 @@ vpath %.o $(OBJ_DIR)
 
 # TARGETS ====================================================================#
 .PHONY: all
-all: $(GCOV)
+all:
 
 .PHONY: $(TARGET)
 $(TARGET): $(CONTAINERS_H) $(OBJ_DIR) $(TESTS_O)
 	$(CXX) $(TESTS_OBJ_PATH) $(LDFLAGS) -o $@
 	./$@
-
-.PHONE: $(GCOV)
-$(GCOV): $(OBJ_DIR) $(CONTAINERS_H) $(REPORT_DIR) $(TESTS_O)
-	$(CXX) $(TESTS_OBJ_PATH) $(LDFLAGS) $(GCOV_FLAGS) -o $(addprefix $(OBJ_DIR)/, $(TARGET))
-	-./$(addprefix $(OBJ_DIR)/, $(TARGET))
-	gcovr -r . --html --html-details -o $(REPORT_DIR)/coverage.html
-	xdg-open $(REPORT_DIR)/coverage.html
 
 .PHONY: dvi
 dvi:
@@ -104,7 +94,6 @@ valgrind: $(TARGET)
 clean:
 	rm -f $(TARGET)
 	rm -rf $(OBJ_DIR)
-	rm -rf $(REPORT_DIR)
 	rm -f $(VALGRIND_REPORT)
 	rm -rf $(DOCS_DIR)
 

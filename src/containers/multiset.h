@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef SRC_MODULES_MULTISET_H_
-#define SRC_MODULES_MULTISET_H_
+#ifndef SRC_CONTAINERS_MULTISET_H_
+#define SRC_CONTAINERS_MULTISET_H_
 
 #include <initializer_list>  // for init_list type
 #include <limits>            // for max()
@@ -541,4 +541,4 @@ auto multiset<K>::upper_bound(const key_type &key) -> iterator {
 
 }  // namespace s21
 
-#endif  // SRC_MODULES_MULTISET_H_
+#endif  // SRC_CONTAINERS_MULTISET_H_

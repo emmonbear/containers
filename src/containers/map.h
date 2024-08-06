@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef SRC_MODULES_MAP_H_
-#define SRC_MODULES_MAP_H_
+#ifndef SRC_CONTAINERS_MAP_H_
+#define SRC_CONTAINERS_MAP_H_
 
 #include <initializer_list>  // for init_list type
 #include <limits>            // for max()
@@ -562,4 +562,4 @@ bool map<K, M>::conatains(const key_type &key) const noexcept {
 
 }  // namespace s21
 
-#endif  // SRC_MODULES_MAP_H_
+#endif  // SRC_CONTAINERS_MAP_H_

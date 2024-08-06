@@ -225,6 +225,22 @@ void queue<value_type, Container>::swap(queue &other) noexcept {
   c.swap(other.c);
 }
 
+/**
+ * @brief Constructs and inserts a new element at the end of the queue.
+ *
+ * @details
+ *
+ * This function forwards the provided arguments to the constructor of the
+ * element type `value_type` and inserts the constructed element at the end
+ * of the underlying container `c`. This is typically used to add new elements
+ * to the queue while forwarding any number of arguments to the constructor
+ * of the element type.
+ *
+ * @param args The arguments used to construct the new element.
+ *
+ * @note The `emplace` method does not return any value. It modifies the
+ *       underlying container by adding a new element.
+ */
 template <typename value_type, typename Container>
 template <class... Args>
 void queue<value_type, Container>::emplace(Args &&...args) {

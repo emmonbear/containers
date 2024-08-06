@@ -202,3 +202,26 @@ TEST(QueueTest, PushLvalue) {
 
   EXPECT_TRUE(compare_queues(std_copy, s21_copy));
 }
+
+TEST(QueueTest, EmplaceEmpty) {
+  std::queue<int> std_q;
+  s21::queue<int> s21_q;
+
+  std_q.emplace(10);
+  s21_q.emplace(10);
+
+  EXPECT_TRUE(compare_queues(std_q, s21_q));
+}
+
+TEST(QueueTest, Emplace) {
+  std::list<int> std_l{3, 4, 1, 2, 9};
+  s21::list<int> s21_l{3, 4, 1, 2, 9};
+
+  std::queue<int, std::list<int>> std_q(std::move(std_l));
+  s21::queue<int, s21::list<int>> s21_q(std::move(s21_l));
+
+  std_q.emplace(123);
+  s21_q.emplace(123);
+
+  EXPECT_TRUE(compare_queues(std_q, s21_q));
+}

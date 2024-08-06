@@ -244,7 +244,7 @@ void queue<value_type, Container>::swap(queue &other) noexcept {
 template <typename value_type, typename Container>
 template <class... Args>
 void queue<value_type, Container>::emplace(Args &&...args) {
-  c.emplace_back(args...);
+  c.emplace_back(std::forward<Args>(args)...);
 }
 
 }  // namespace s21

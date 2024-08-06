@@ -150,7 +150,7 @@ class vector<V>::VectorConstIterator {
   const_reference operator*() const;
 
  private:
-  // Fields 
+  // Fields
 
   pointer ptr_{};  ///< Pointer to the current element
 };
@@ -208,7 +208,7 @@ class vector<V>::VectorIterator {
 
  private:
   // Fields
-  
+
   pointer ptr_{};  ///< Pointer to the current element
 };
 

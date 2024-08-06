@@ -15,8 +15,6 @@
 #include <gtest/gtest.h>
 
 #include "../s21_containers.h"
-
-// Switch on if you want to print the matrix
-// #define ENABLE_DEBUG_PRINTS
+#include "../s21_containersplus.h"
 
 #endif  // SRC_TESTS_MAIN_TEST_H_

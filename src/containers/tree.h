@@ -1275,7 +1275,8 @@ void tree<K, M>::deleteBlackNoChild(Node *&node) noexcept {
     } else {
       blackParBlackBrosRedLeftOrAllGran(node);
     }
-  } else if (brother && node->parent->color == kBLACK && brother->color == kRED) {
+  } else if (brother && node->parent->color == kBLACK &&
+             brother->color == kRED) {
     if ((is_left && brother->left && brother->left->color == kBLACK) ||
         (!is_left && brother->right && brother->right->color == kBLACK)) {
       Node *grgrson = (is_left) ? brother->left->right : brother->right->left;
@@ -1289,7 +1290,7 @@ void tree<K, M>::deleteBlackNoChild(Node *&node) noexcept {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//                     kBLACK NO CHILD NODE REMOVAL CASES                      //
+//                     kBLACK NO CHILD NODE REMOVAL CASES //
 ////////////////////////////////////////////////////////////////////////////////
 
 /**

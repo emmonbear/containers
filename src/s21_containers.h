@@ -12,10 +12,8 @@
 #ifndef SRC_S21_CONTAINERS_H_
 #define SRC_S21_CONTAINERS_H_
 
-#include "./containers/array.h"
 #include "./containers/list.h"
 #include "./containers/map.h"
-#include "./containers/multiset.h"
 #include "./containers/queue.h"
 #include "./containers/set.h"
 #include "./containers/stack.h"

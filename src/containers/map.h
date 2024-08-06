@@ -97,7 +97,6 @@ class map {
 
   bool conatains(const key_type &key) const noexcept;
 
-
  private:
   // Fields
 

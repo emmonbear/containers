@@ -90,7 +90,6 @@ class set {
   iterator find(const key_type &key) const noexcept;
   bool conatains(const key_type &key) const noexcept;
 
-
  private:
   // Fields
 
@@ -145,7 +144,7 @@ class set<K>::SetConstIterator
     : public tree<const K, const K>::TreeConstIterator {
  public:
   // Type aliases
-  
+
   using _tree_cit = typename tree<const K, const K>::TreeConstIterator;
 
   // Constructors

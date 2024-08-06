@@ -68,9 +68,6 @@ clang_check:
 cpplint:
 	cpplint $(CC_FILES) $(H_FILES)
 
-check:
-	make clang_fix
-
 valgrind: $(TARGET)
 	@printf '\033[1;33m\n\t\t\t\t                   _            _           _   _            _   _             \n'
 	@printf '\t\t\t\t                  | |          (_)         | | | |          | | (_)            \n'

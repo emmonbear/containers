@@ -54,7 +54,7 @@ class multiset {
 
  private:
   tree<const key_type, const key_type> tree_{
-      tree<const key_type, const key_type>::NON_UNIQUE};  ///< Tree of elements
+      tree<const key_type, const key_type>::kNON_UNIQUE};  ///< Tree of elements
 
  public:
   // Constructors/assignment operators/destructor

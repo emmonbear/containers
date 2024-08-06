@@ -35,15 +35,11 @@ namespace s21 {
  */
 template <typename K, typename M>
 class map {
- private:
-  // Container types
-
-  typedef typename tree<K, M>::const_iterator MapConstIterator;
-  typedef typename tree<K, M>::iterator MapIterator;
-
  public:
   // Type aliases
 
+  typedef typename tree<K, M>::const_iterator MapConstIterator;
+  typedef typename tree<K, M>::iterator MapIterator;
   using key_type = K;                               ///< Type of pairs key
   using mapped_type = M;                            ///< Type of keys value
   using value_type = std::pair<K, M>;               ///< Pair key-value
@@ -54,10 +50,6 @@ class map {
   using const_iterator = MapConstIterator;          ///< For read elements
   using iterator_bool = std::pair<iterator, bool>;  ///< Pair iterator-bool
 
- private:
-  tree<key_type, mapped_type> tree_{};  ///< Tree of elements
-
- public:
   // Constructors/assignment operators/destructor
 
   map() noexcept = default;
@@ -104,6 +96,12 @@ class map {
   // Map Lookup
 
   bool conatains(const key_type &key) const noexcept;
+
+
+ private:
+  // Fields
+
+  tree<key_type, mapped_type> tree_{};  ///< Tree of elements
 };
 
 ////////////////////////////////////////////////////////////////////////////////

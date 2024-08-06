@@ -32,13 +32,12 @@ namespace s21 {
  */
 template <typename V>
 class vector {
- private:
+ public:
   // Container types
 
   class VectorConstIterator;
   class VectorIterator;
 
- public:
   // Type aliases
 
   using value_type = V;                        ///< Type of vectors elements
@@ -49,17 +48,6 @@ class vector {
   using iterator = VectorIterator;             ///< For read/write elements
   using const_iterator = VectorConstIterator;  ///< For read elements
 
- private:
-  size_type size_{};      ///< Size of vector
-  size_type capacity_{};  ///< Current capacity of vector
-  value_type *arr_{};     ///< Array of elements
-
-  // Allocating/deallocating memory
-
-  pointer allocateMemory(size_type size, size_type capacity);
-  void freeMemory() noexcept;
-
- public:
   // Constructors/assignment operators/destructor
 
   vector() noexcept = default;
@@ -110,6 +98,18 @@ class vector {
   reference emplace_back(Args &&...args);
   template <typename... Args>
   iterator emplace(const_iterator pos, Args &&...args);
+
+ private:
+  // Fields
+
+  size_type size_{};      ///< Size of vector
+  size_type capacity_{};  ///< Current capacity of vector
+  value_type *arr_{};     ///< Array of elements
+
+  // Allocating/deallocating memory
+
+  pointer allocateMemory(size_type size, size_type capacity);
+  void freeMemory() noexcept;
 };
 
 /**
@@ -124,9 +124,6 @@ class vector {
  */
 template <typename V>
 class vector<V>::VectorConstIterator {
- private:
-  pointer ptr_{};  ///< Pointer to the current element
-
  public:
   // Constructors
 
@@ -151,6 +148,11 @@ class vector<V>::VectorConstIterator {
   bool operator==(const_iterator other) const noexcept;
   bool operator!=(const_iterator other) const noexcept;
   const_reference operator*() const;
+
+ private:
+  // Fields 
+
+  pointer ptr_{};  ///< Pointer to the current element
 };
 
 /**
@@ -165,9 +167,6 @@ class vector<V>::VectorConstIterator {
  */
 template <typename V>
 class vector<V>::VectorIterator {
- private:
-  pointer ptr_{};  ///< Pointer to the current element
-
  public:
   // Constructors
 
@@ -206,6 +205,11 @@ class vector<V>::VectorIterator {
    * iterator's pointer.
    */
   operator const_iterator() const noexcept { return const_iterator{ptr_}; }
+
+ private:
+  // Fields
+  
+  pointer ptr_{};  ///< Pointer to the current element
 };
 
 ////////////////////////////////////////////////////////////////////////////////

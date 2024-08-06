@@ -34,13 +34,12 @@ namespace s21 {
  */
 template <typename K>
 class set {
- private:
+ public:
   // Container types
 
   class SetConstIterator;
   class SetIterator;
 
- public:
   // Type aliases
 
   using key_type = const K;                    ///< Type of keys
@@ -52,10 +51,6 @@ class set {
   using const_iterator = SetConstIterator;     ///< For read elements
   using iterator_bool = std::pair<iterator, bool>;  ///< Pair iterator-bool
 
- private:
-  tree<const key_type, const key_type> tree_{};  ///< Tree of elements
-
- public:
   // Constructors/assignment operators/destructor
 
   set() noexcept = default;
@@ -94,6 +89,12 @@ class set {
 
   iterator find(const key_type &key) const noexcept;
   bool conatains(const key_type &key) const noexcept;
+
+
+ private:
+  // Fields
+
+  tree<const key_type, const key_type> tree_{};  ///< Tree of elements
 };
 
 /**
@@ -108,11 +109,17 @@ class set {
 template <typename K>
 class set<K>::SetIterator : public tree<const K, const K>::TreeIterator {
  public:
+  // Type aliases
+
   using _tree_it = typename tree<const K, const K>::TreeIterator;
+
+  // Constructors
 
   SetIterator() noexcept = default;
   SetIterator(const SetIterator &other) noexcept : _tree_it{other} {}
   SetIterator(const _tree_it &other) noexcept : _tree_it{other} {}
+
+  // Operators
 
   iterator &operator=(const iterator &other) noexcept;
   iterator &operator++() noexcept;
@@ -137,12 +144,18 @@ template <typename K>
 class set<K>::SetConstIterator
     : public tree<const K, const K>::TreeConstIterator {
  public:
+  // Type aliases
+  
   using _tree_cit = typename tree<const K, const K>::TreeConstIterator;
+
+  // Constructors
 
   SetConstIterator() noexcept = default;
   SetConstIterator(const iterator &other) noexcept : _tree_cit(other) {}
   SetConstIterator(const const_iterator &other) noexcept : _tree_cit(other) {}
   SetConstIterator(const _tree_cit &other) noexcept : _tree_cit(other) {}
+
+  // Operators
 
   const_iterator &operator=(const const_iterator &other) noexcept;
   const_iterator &operator++() noexcept;

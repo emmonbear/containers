@@ -56,6 +56,9 @@ class queue {
   void pop();
   void swap(queue &other) noexcept;
 
+  template <class... Args>
+  void emplace(Args &&...args);
+
  private:
   Container c;  ///< The container used to store elements in the queue.
 };
@@ -221,6 +224,13 @@ template <typename value_type, typename Container>
 void queue<value_type, Container>::swap(queue &other) noexcept {
   c.swap(other.c);
 }
+
+template <typename value_type, typename Container>
+template <class... Args>
+void queue<value_type, Container>::emplace(Args &&...args) {
+  c.emplace_back(args...);
+}
+
 }  // namespace s21
 
 #endif  // SRC_CONTAINERS_QUEUE_H_

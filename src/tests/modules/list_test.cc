@@ -516,3 +516,97 @@ TEST(ListTest, Sort10) {
 
   EXPECT_TRUE(l == expected);
 }
+
+TEST(ListTest, EmplaseBegin) {
+  std::list<int> std_l{1, 2, 3, 4};
+  std_l.emplace(std_l.begin(), 2);
+
+  s21::list<int> s21_l{1, 2, 3, 4};
+  s21_l.emplace(s21_l.begin(), 2);
+
+  EXPECT_TRUE(compare_lists(std_l, s21_l, true));
+  EXPECT_EQ(std_l.size(), s21_l.size());
+}
+
+TEST(ListTest, EmplaseEnd) {
+  std::list<int> std_l{1, 2, 3, 4};
+  std_l.emplace(std_l.end(), 2);
+
+  s21::list<int> s21_l{1, 2, 3, 4};
+  s21_l.emplace(s21_l.end(), 2);
+
+  EXPECT_TRUE(compare_lists(std_l, s21_l, true));
+  EXPECT_EQ(std_l.size(), s21_l.size());
+}
+
+TEST(ListTest, EmplaseMiddle) {
+  std::list<int> std_l{1, 2, 3, 4};
+  auto std_it = std_l.begin();
+  std_it++;
+  std_it++;
+  std_l.emplace(std_it, 10);
+
+  s21::list<int> s21_l{1, 2, 3, 4};
+  auto s21_it = s21_l.begin();
+  s21_it++;
+  s21_it++;
+  s21_l.emplace(s21_it, 10);
+
+  EXPECT_TRUE(compare_lists(std_l, s21_l, true));
+  EXPECT_EQ(std_l.size(), s21_l.size());
+}
+
+TEST(ListTest, EmplaseEmpty) {
+  std::list<int> std_l;
+  std_l.emplace(std_l.begin(), 10);
+
+  s21::list<int> s21_l;
+  s21_l.emplace(s21_l.begin(), 10);
+
+  EXPECT_TRUE(compare_lists(std_l, s21_l, true));
+  EXPECT_EQ(std_l.size(), s21_l.size());
+}
+
+TEST(ListTest, EmplaseFrontEmpty) {
+  std::list<int> std_l;
+  std_l.emplace_front(10);
+
+  s21::list<int> s21_l;
+  s21_l.emplace_front(10);
+
+  EXPECT_TRUE(compare_lists(std_l, s21_l, true));
+  EXPECT_EQ(std_l.size(), s21_l.size());
+}
+
+TEST(ListTest, EmplaseFront) {
+  std::list<int> std_l{1, 10, 20, 312, 12, 3};
+  std_l.emplace_front(10);
+
+  s21::list<int> s21_l{1, 10, 20, 312, 12, 3};
+  s21_l.emplace_front(10);
+
+  EXPECT_TRUE(compare_lists(std_l, s21_l, true));
+  EXPECT_EQ(std_l.size(), s21_l.size());
+}
+
+TEST(ListTest, EmplaseBackEmpty) {
+  std::list<int> std_l;
+  std_l.emplace_back(10);
+
+  s21::list<int> s21_l;
+  s21_l.emplace_back(10);
+
+  EXPECT_TRUE(compare_lists(std_l, s21_l, true));
+  EXPECT_EQ(std_l.size(), s21_l.size());
+}
+
+TEST(ListTest, EmplaseBack) {
+  std::list<int> std_l{1, 10, 20, 312, 12, 3};
+  std_l.emplace_back(10);
+
+  s21::list<int> s21_l{1, 10, 20, 312, 12, 3};
+  s21_l.emplace_back(10);
+
+  EXPECT_TRUE(compare_lists(std_l, s21_l, true));
+  EXPECT_EQ(std_l.size(), s21_l.size());
+}

@@ -94,6 +94,15 @@ class list {
   void unique();
   void sort();
 
+  template <typename... Args>
+  iterator emplace(const_iterator pos, Args &&...args);
+
+  template <typename... Args>
+  reference emplace_front(Args &&...args);
+
+  template <class... Args>
+  reference emplace_back(Args &&...args);
+
   // Other
 
   bool operator==(const list &l) const;
@@ -1009,6 +1018,74 @@ void list<value_type>::sort() {
   if (size_ > 1) {
     quick_sort(head_, tail_);
   }
+}
+
+template <typename value_type>
+template <typename... Args>
+auto list<value_type>::emplace(const_iterator pos, Args &&...args) -> iterator {
+  Node *new_node = new Node(value_type{std::forward<Args>(args)...});
+
+  Node *current = pos.node_;
+
+  if (!current) {
+    if (!tail_) {
+      head_ = tail_ = new_node;
+    } else {
+      new_node->prev = tail_;
+      tail_->next = new_node;
+      tail_ = new_node;
+    }
+  } else {
+    new_node->next = current;
+    new_node->prev = current->prev;
+
+    if (current->prev) {
+      current->prev->next = new_node;
+    } else {
+      head_ = new_node;
+    }
+    current->prev = new_node;
+  }
+
+  ++size_;
+
+  return iterator(new_node);
+}
+
+template <typename value_type>
+template <typename... Args>
+auto list<value_type>::emplace_front(Args &&...args) -> reference {
+  Node *new_node = new Node{value_type{std::forward<Args>(args)...}};
+
+  if (!head_) {
+    head_ = tail_ = new_node;
+  } else {
+    new_node->next = head_;
+    head_->prev = new_node;
+    head_ = new_node;
+  }
+
+  ++size_;
+
+  return new_node->value;
+}
+
+template <typename value_type>
+template <typename... Args>
+auto list<value_type>::emplace_back(Args &&...args) -> reference {
+  Node *new_node = new Node{value_type{std::forward<Args>(args)...}};
+
+  if (!tail_) {
+    head_ = tail_ = new_node;
+  } else {
+    new_node->prev = tail_;
+    tail_->next = new_node;
+    tail_ = new_node;
+  }
+
+  ++size_;
+
+  return new_node->value;
 }
 
 /**

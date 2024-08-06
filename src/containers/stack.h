@@ -252,6 +252,24 @@ void stack<value_type, Container>::swap(stack &other) noexcept {
   std::swap(c, other.c);
 }
 
+/**
+ * @brief Constructs and inserts a new element at the top of the stack.
+ *
+ * @details
+ *
+ * This function forwards the provided arguments to the constructor of the
+ * element type `value_type` and inserts the constructed element at the top
+ * of the underlying container `c`, which is typically a container supporting
+ * `emplace_front` such as `std::deque`. This allows for efficient construction
+ * of the element in-place at the top of the stack.
+ *
+ * @tparam Args Variadic template parameters representing the types of arguments
+ *         used to construct the new element.
+ * @param args The arguments used to construct the new element.
+ *
+ * @note The `emplace` method does not return any value. It modifies the
+ *       underlying container by adding a new element at the top.
+ */
 template <typename value_type, typename Container>
 template <class... Args>
 void stack<value_type, Container>::emplace(Args &&...args) {

@@ -1020,6 +1020,18 @@ void list<value_type>::sort() {
   }
 }
 
+/**
+ * @brief Inserts a new element at the end of the list.
+ *
+ * @details
+ *
+ * This function creates a new element in the list using the provided arguments.
+ * The element is constructed in-place at the end of the list. If the list is
+ * empty, the new element becomes both the head and the tail of the list.
+ *
+ * @param args The arguments used to construct the new element.
+ * @return A reference to the newly added element in the list.
+ */
 template <typename value_type>
 template <typename... Args>
 auto list<value_type>::emplace(const_iterator pos, Args &&...args) -> iterator {
@@ -1052,6 +1064,18 @@ auto list<value_type>::emplace(const_iterator pos, Args &&...args) -> iterator {
   return iterator(new_node);
 }
 
+/**
+ * @brief Inserts a new element at the beginning of the list.
+ *
+ * @details
+ *
+ * This function constructs a new element in the list using the provided
+ * arguments, and inserts it at the front of the list. If the list is empty, the
+ * new element becomes both the head and the tail of the list.
+ *
+ * @param args The arguments used to construct the new element.
+ * @return A reference to the newly added element at the front of the list.
+ */
 template <typename value_type>
 template <typename... Args>
 auto list<value_type>::emplace_front(Args &&...args) -> reference {
@@ -1070,6 +1094,18 @@ auto list<value_type>::emplace_front(Args &&...args) -> reference {
   return new_node->value;
 }
 
+/**
+ * @brief Inserts a new element at the end of the list.
+ *
+ * @details
+ *
+ * This function constructs a new element in the list using the provided
+ * arguments, and inserts it at the back of the list. If the list is empty, the
+ * new element becomes both the head and the tail of the list.
+ *
+ * @param args The arguments used to construct the new element.
+ * @return A reference to the newly added element at the end of the list.
+ */
 template <typename value_type>
 template <typename... Args>
 auto list<value_type>::emplace_back(Args &&...args) -> reference {
